@@ -1,4 +1,4 @@
-package com.sr.composemovies
+package com.sr.composemovies.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
