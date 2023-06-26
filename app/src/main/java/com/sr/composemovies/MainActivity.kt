@@ -1,6 +1,5 @@
 package com.sr.composemovies
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,11 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -76,7 +73,8 @@ fun MovieRow(movie: String) {
         .padding(12.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
-        Row(horizontalArrangement = Arrangement.Start) {
+        Row(horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painterResource(id = R.drawable.ic_baseline_self_improvement_24),
                 "Movie image.", modifier = Modifier
@@ -85,13 +83,11 @@ fun MovieRow(movie: String) {
                 contentScale = ContentScale.FillHeight)
         }
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center) {
-            Text(text = movie)
-        }
+        Text(text = movie,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .wrapContentHeight()
+                .wrapContentWidth())
     }
 }
 
