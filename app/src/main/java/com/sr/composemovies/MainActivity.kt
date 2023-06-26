@@ -3,39 +3,49 @@ package com.sr.composemovies
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sr.composemovies.ui.theme.ComposeMoviesTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeMoviesTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+            App {
+                MainContent()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun App(content: @Composable () -> Unit) {
+    val vm: MainViewModel = viewModel()
+    ComposeMoviesTheme {
+        Scaffold(topBar = {
+            TopAppBar(
+                backgroundColor = Color.Black,
+                elevation = 5.dp) {
+                Text(text = "Dashboard", color = Color.LightGray)
+            }
+        }) {
+            content()
+        }
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    ComposeMoviesTheme {
-        Greeting("Android")
+@Preview(showBackground = true)
+fun MainContent() {
+    App {
+        Text(text = "This is the main view.")
     }
 }
