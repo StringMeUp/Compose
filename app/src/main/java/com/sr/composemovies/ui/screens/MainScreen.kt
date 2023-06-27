@@ -14,19 +14,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.R
-import com.sr.composemovies.navigation.Destination
+import com.sr.composemovies.navigation.NavigationItem
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainViewModel = viewModel()) {
+@Preview
+fun MainScreen(
+    navController: NavController = rememberNavController(),
+    viewModel: MainViewModel = viewModel(),
+) {
     LazyColumn {
         items(viewModel.getMovies()) {
             MovieRow(movie = it) { movie ->
-                navController.navigate(Destination.Detail.route)
+                navController.navigate(NavigationItem.Detail.route)
             }
         }
     }

@@ -1,34 +1,105 @@
 package com.sr.composemovies.navigation
 
-import android.util.Log
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.ui.screens.DetailScreen
 import com.sr.composemovies.ui.screens.MainScreen
 
 //function to navigate with a navController
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation() {
-    //navController
-    val navController = rememberNavController()
+fun MainNavigation(
+    navController: NavHostController,
+    viewModel: MainViewModel = viewModel(),
+) {
     //navHost with start destination
-    NavHost(navController = navController, startDestination = Destination.Main.route) {
-        Destination.all().forEach {
-            composable(it.route) { entry ->
-                when (entry.destination.route) {
-                    Destination.Main.route -> {
-                        MainScreen(navController = navController)
-                    }
-                    Destination.Detail.route -> {
-                        DetailScreen()
-                    }
-                    else -> {
-                        throw IllegalStateException("Unknown destination in graph.")
-                    }
+    AnimatedNavHost(navController = navController, startDestination = NavigationItem.Main.route) {
+        composable(
+            route = NavigationItem.Main.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    NavigationItem.Detail.route ->
+                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(2000))
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    NavigationItem.Detail.route ->
+                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    NavigationItem.Detail.route ->
+                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (targetState.destination.route) {
+                    NavigationItem.Detail.route ->
+                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(700))
+                    else -> null
                 }
             }
+        ) {
+            MainScreen(navController = navController)
         }
+
+        composable(route = NavigationItem.Detail.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    NavigationItem.Main.route ->
+                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    NavigationItem.Main.route ->
+                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            },
+            popEnterTransition = {
+                when (initialState.destination.route) {
+                    NavigationItem.Main.route ->
+                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            },
+            popExitTransition = {
+                when (targetState.destination.route) {
+                    NavigationItem.Main.route ->
+                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(700))
+                    else -> null
+                }
+            }) {
+            DetailScreen()
+        }
+
+//        composable(route = NavigationItem.Main.route) {
+//            MainScreen(navController = navController)
+//        }
+//        composable(route = NavigationItem.Detail.route) {
+//            DetailScreen()
+//        }
     }
 }
