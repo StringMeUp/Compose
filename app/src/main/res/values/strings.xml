@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ComposeMovies</string>
+    <string name="main_desc">At home</string>
+    <string name="detail_desc">At sea</string>
 </resources>
