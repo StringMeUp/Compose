@@ -95,11 +95,12 @@ fun MainNavigation(
             DetailScreen()
         }
 
-//        composable(route = NavigationItem.Main.route) {
-//            MainScreen(navController = navController)
-//        }
-//        composable(route = NavigationItem.Detail.route) {
-//            DetailScreen()
-//        }
+  /** Jetpack Compose without animations::
+          composable(route = NavigationItem.Main.route) {
+            MainScreen(navController = navController)
+        }
+        composable(route = NavigationItem.Detail.route) {
+            DetailScreen()
+        }*/
     }
 }
