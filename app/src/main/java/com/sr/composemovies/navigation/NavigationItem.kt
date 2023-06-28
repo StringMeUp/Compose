@@ -4,7 +4,7 @@ import com.sr.composemovies.R
 
 sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
     object Main :
-        NavigationItem(route = "main", icon = R.drawable.ic_house, name = R.string.main_desc)
+        NavigationItem(route = "main", icon = R.drawable.ic_siding, name = R.string.main_desc)
 
     object Detail :
         NavigationItem(route = "detail", icon = R.drawable.ic_boat, name = R.string.detail_desc)

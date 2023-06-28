@@ -30,36 +30,44 @@ fun MainScreen(
     viewModel: MainViewModel = viewModel(),
 ) {
     LazyColumn {
-        items(viewModel.getMovies()) {
-            MovieRow(movie = it) { movie ->
-                navController.navigate(NavigationItem.Detail.route)
+        items(viewModel.items.value) {
+            MovieRow(item = it) { item ->
+                when (item.text) {
+                    "Detail: Logo" -> {
+                        navController.navigate(NavigationItem.Detail.route)
+                    }
+                    "Detail: Jet" -> {}
+                    "Detail: Ui" -> {}
+                    "Detail: Material" -> {}
+                }
             }
         }
     }
 }
 
 @Composable
-fun MovieRow(movie: String, onItemClick: (String) -> Unit) {
+fun MovieRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.ComposeItem) -> Unit) {
     Card(modifier = Modifier
         .height(130.dp)
         .fillMaxWidth()
         .padding(12.dp)
         .clickable {
-            onItemClick(movie)
+            onItemClick(item)
         },
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
         Row(horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painterResource(id = R.drawable.ic_baseline_self_improvement_24),
-                "Movie image.", modifier = Modifier
+                painterResource(id = item.image),
+                contentDescription = item.text,
+                modifier = Modifier
                     .fillMaxHeight()
                     .width(100.dp),
                 contentScale = ContentScale.FillHeight)
         }
 
-        Text(text = movie,
+        Text(text = item.text,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .wrapContentHeight()

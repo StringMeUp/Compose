@@ -9,6 +9,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,11 +61,11 @@ fun MoviesApp(
 
         when (navBackStackEntry?.destination?.route) {
             NavigationItem.Main.route -> {
-                viewModel.topBarState.value = true
+                viewModel.setTopBarState(true)
             }
 
             NavigationItem.Detail.route -> {
-                viewModel.topBarState.value = false
+                viewModel.setTopBarState(false)
             }
         }
 
@@ -99,7 +102,7 @@ private fun AnimateTopBar(
             Card(
                 elevation = 5.dp,
                 shape = RoundedCornerShape(8.dp),
-                backgroundColor = Color.LightGray,
+                backgroundColor = colorResource(id = R.color.s_color),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(3.dp)) {
@@ -150,7 +153,7 @@ fun AddTopAppBar(navController: NavHostController) {
         Card(
             elevation = 5.dp,
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color.LightGray,
+            backgroundColor = colorResource(id = R.color.s_color),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(3.dp)) {
@@ -162,7 +165,7 @@ fun AddTopAppBar(navController: NavHostController) {
                 val nameRes =
                     NavigationItem.findNavItem(navController.currentDestination?.route).name
 
-                Icon(painter = painterResource(id = imageId),
+                Image(painter = painterResource(id = imageId),
                     contentDescription = stringResource(id = nameRes),
                     modifier = Modifier
                         .padding(start = 14.dp)
@@ -174,7 +177,7 @@ fun AddTopAppBar(navController: NavHostController) {
                 )
 
                 Text(text = stringResource(id = nameRes),
-                    color = Color.Blue,
+                    color = Color.White,
                     modifier = Modifier
                         .padding(8.dp)
                         .constrainAs(text) {
