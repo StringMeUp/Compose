@@ -1,6 +1,7 @@
 package com.sr.composemovies.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -17,6 +18,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.R
+import com.sr.composemovies.navigation.NavigationItem
+import com.sr.composemovies.navigation.clickWithDebounce
 
 @Composable
 @Preview(showBackground = true)
@@ -58,7 +61,11 @@ fun LogoScreen(
                     .fillMaxWidth()
                     .padding(24.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.s_color)),
-                onClick = { /*TODO navigate further down the road*/ }) {
+                onClick = {
+                    navController?.navigate(NavigationItem.Next.route) {
+                        popUpTo(NavigationItem.Main.route)
+                    }
+                }) {
                 Text(text = "Next", color = Color.White)
             }
         }

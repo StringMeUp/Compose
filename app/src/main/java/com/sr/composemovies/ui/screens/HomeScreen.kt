@@ -1,7 +1,6 @@
 package com.sr.composemovies.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.navigation.NavigationItem
+import com.sr.composemovies.navigation.clickWithDebounce
 
 @Composable
 @Preview
@@ -52,9 +52,7 @@ fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.Compose
         .height(130.dp)
         .fillMaxWidth()
         .padding(12.dp)
-        .clickable {
-            onItemClick(item)
-        },
+        .clickWithDebounce { onItemClick(item) },
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
         Row(horizontalArrangement = Arrangement.Start,
