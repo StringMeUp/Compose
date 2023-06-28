@@ -24,13 +24,13 @@ import com.sr.composemovies.navigation.NavigationItem
 
 @Composable
 @Preview
-fun MainScreen(
+fun HomeScreen(
     navController: NavController = rememberNavController(),
     viewModel: MainViewModel = viewModel(),
 ) {
     LazyColumn {
         items(viewModel.items.value) {
-            MovieRow(item = it) { item ->
+            CardRow(item = it) { item ->
                 when (item.text) {
                     "Detail: Logo" -> {
                         navController.navigate(NavigationItem.withRouteArgs(
@@ -47,7 +47,7 @@ fun MainScreen(
 }
 
 @Composable
-fun MovieRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.ComposeItem) -> Unit) {
+fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.ComposeItem) -> Unit) {
     Card(modifier = Modifier
         .height(130.dp)
         .fillMaxWidth()
