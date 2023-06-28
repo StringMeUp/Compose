@@ -12,8 +12,8 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.NavigationConstants
-import com.sr.composemovies.ui.screens.DetailScreen
-import com.sr.composemovies.ui.screens.MainScreen
+import com.sr.composemovies.ui.screens.LogoScreen
+import com.sr.composemovies.ui.screens.HomeScreen
 
 //function to navigate with a navController
 @OptIn(ExperimentalAnimationApi::class)
@@ -59,7 +59,7 @@ fun MainNavigation(
                 }
             }
         ) {
-            MainScreen(navController = navController)
+            HomeScreen(navController = navController)
         }
 
         composable(
@@ -102,7 +102,7 @@ fun MainNavigation(
                     else -> null
                 }
             }) { backStackEntry ->
-            DetailScreen(value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
+            LogoScreen(navController = navController, value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
         }
 
         /** Jetpack Compose without animations::
