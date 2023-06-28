@@ -6,9 +6,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.sr.composemovies.MainViewModel
+import com.sr.composemovies.NavigationConstants
 import com.sr.composemovies.ui.screens.DetailScreen
 import com.sr.composemovies.ui.screens.MainScreen
 
@@ -27,7 +30,7 @@ fun MainNavigation(
                 when (initialState.destination.route) {
                     NavigationItem.Detail.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(2000))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -35,7 +38,7 @@ fun MainNavigation(
                 when (targetState.destination.route) {
                     NavigationItem.Detail.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -43,7 +46,7 @@ fun MainNavigation(
                 when (initialState.destination.route) {
                     NavigationItem.Detail.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -51,7 +54,7 @@ fun MainNavigation(
                 when (targetState.destination.route) {
                     NavigationItem.Detail.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             }
@@ -59,12 +62,19 @@ fun MainNavigation(
             MainScreen(navController = navController)
         }
 
-        composable(route = NavigationItem.Detail.route,
+        composable(
+            route = NavigationItem.Detail.route,
+            arguments = listOf(
+                navArgument(NavigationConstants.Arg_Detail) {
+                    type = NavType.StringType
+                    defaultValue = "Default"
+                }
+            ),
             enterTransition = {
                 when (initialState.destination.route) {
                     NavigationItem.Main.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -72,7 +82,7 @@ fun MainNavigation(
                 when (targetState.destination.route) {
                     NavigationItem.Main.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -80,7 +90,7 @@ fun MainNavigation(
                 when (initialState.destination.route) {
                     NavigationItem.Main.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
             },
@@ -88,19 +98,19 @@ fun MainNavigation(
                 when (targetState.destination.route) {
                     NavigationItem.Main.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(700))
+                            animationSpec = tween(500))
                     else -> null
                 }
-            }) {
-            DetailScreen()
+            }) { backStackEntry ->
+            DetailScreen(value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
         }
 
-  /** Jetpack Compose without animations::
-          composable(route = NavigationItem.Main.route) {
-            MainScreen(navController = navController)
+        /** Jetpack Compose without animations::
+        composable(route = NavigationItem.Main.route) {
+        MainScreen(navController = navController)
         }
         composable(route = NavigationItem.Detail.route) {
-            DetailScreen()
+        DetailScreen()
         }*/
     }
 }

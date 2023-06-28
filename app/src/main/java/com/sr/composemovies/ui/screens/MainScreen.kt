@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.R
 import com.sr.composemovies.navigation.NavigationItem
 
 @Composable
@@ -34,7 +33,9 @@ fun MainScreen(
             MovieRow(item = it) { item ->
                 when (item.text) {
                     "Detail: Logo" -> {
-                        navController.navigate(NavigationItem.Detail.route)
+                        navController.navigate(NavigationItem.withRouteArgs(
+                            navItem = NavigationItem.Detail,
+                            arg = "You've just passed default arguments."))
                     }
                     "Detail: Jet" -> {}
                     "Detail: Ui" -> {}
