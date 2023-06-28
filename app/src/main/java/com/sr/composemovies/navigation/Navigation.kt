@@ -3,7 +3,9 @@ package com.sr.composemovies.navigation
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -14,6 +16,7 @@ import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.NavigationConstants
 import com.sr.composemovies.ui.screens.LogoScreen
 import com.sr.composemovies.ui.screens.HomeScreen
+import com.sr.composemovies.ui.screens.NextScreen
 
 //function to navigate with a navController
 @OptIn(ExperimentalAnimationApi::class)
@@ -102,7 +105,12 @@ fun MainNavigation(
                     else -> null
                 }
             }) { backStackEntry ->
-            LogoScreen(navController = navController, value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
+            LogoScreen(navController = navController,
+                value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
+        }
+
+        composable(route = NavigationItem.Next.route) {
+            NextScreen(navController = navController)
         }
 
         /** Jetpack Compose without animations::
@@ -112,5 +120,18 @@ fun MainNavigation(
         composable(route = NavigationItem.Detail.route) {
         DetailScreen()
         }*/
+    }
+}
+
+inline fun Modifier.clickWithDebounce(
+    debounceInterval: Long = 3000,
+    crossinline onClick: () -> Unit,
+): Modifier {
+    var lastClickTime = 0L
+    return clickable {
+        val currentTime = System.currentTimeMillis()
+        if ((currentTime - lastClickTime) < debounceInterval) return@clickable
+        lastClickTime = currentTime
+        onClick()
     }
 }
