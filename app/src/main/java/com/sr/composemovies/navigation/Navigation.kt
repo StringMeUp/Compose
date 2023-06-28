@@ -68,7 +68,7 @@ fun MainNavigation(
         composable(
             route = NavigationItem.Detail.route,
             arguments = listOf(
-                navArgument(NavigationConstants.Arg_Detail) {
+                navArgument(name = NavigationConstants.Arg_Detail) {
                     type = NavType.StringType
                     defaultValue = "Default"
                 }
@@ -109,8 +109,14 @@ fun MainNavigation(
                 value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
         }
 
-        composable(route = NavigationItem.Next.route) {
-            NextScreen(navController = navController)
+        composable(route = NavigationItem.Next.route, arguments = listOf(
+            navArgument(name = NavigationConstants.Arg_Next) {
+                type = NavType.StringType
+                nullable = true
+            })) { backStackEntry ->
+            NextScreen(
+                navController = navController,
+                args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Next))
         }
 
         /** Jetpack Compose without animations::

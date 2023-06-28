@@ -13,9 +13,10 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             icon = R.drawable.ic_boat,
             name = R.string.detail_desc)
 
-    object Next : NavigationItem(route = "next",
-        icon = R.drawable.ic_next,
-        name = R.string.detail_desc)
+    object Next :
+        NavigationItem(route = "next?${NavigationConstants.Arg_Next}={${NavigationConstants.Arg_Next}}",
+            icon = R.drawable.ic_next,
+            name = R.string.detail_desc)
 
     companion object {
         private fun all() = listOf(Main, Detail)
@@ -25,6 +26,10 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
 
         fun withRouteArgs(navItem: NavigationItem, arg: String): String {
             return "${navItem.route.substringBefore("/")}/$arg"
+        }
+
+        fun withNullableRouteArgs(navItem: NavigationItem, arg: String? = null): String {
+            return "${navItem.route.substringBefore("=")}=$arg"
         }
     }
 }
