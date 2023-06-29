@@ -53,8 +53,7 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .fillMaxWidth()
-                .padding(top = 56.dp),
+                .fillMaxWidth(),
             fontSize = 24.sp)
 
         Card(shape = RoundedCornerShape(8.dp),

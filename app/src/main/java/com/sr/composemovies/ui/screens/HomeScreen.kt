@@ -18,17 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import clickWithDebounce
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.navigation.NavigationItem
-import com.sr.composemovies.navigation.clickWithDebounce
+
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun HomeScreen(
     navController: NavController = rememberNavController(),
     viewModel: MainViewModel = viewModel(),
 ) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(viewModel.items.value) {
             CardRow(item = it) { item ->
                 when (item.text) {
@@ -50,8 +51,8 @@ fun HomeScreen(
 fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.ComposeItem) -> Unit) {
     Card(modifier = Modifier
         .height(130.dp)
+        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
         .fillMaxWidth()
-        .padding(12.dp)
         .clickWithDebounce { onItemClick(item) },
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
