@@ -34,13 +34,12 @@ fun SetUpSerializable(args: MainViewModel.ComposeItem? = null, onClick: () -> Un
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
+                .fillMaxWidth()
                 .constrainAs(title) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
-                .fillMaxWidth()
-                .padding(top = 56.dp),
+                },
             fontSize = 24.sp)
 
         Text(text = "In this case we used Gson to be able to simply " +
@@ -55,8 +54,7 @@ fun SetUpSerializable(args: MainViewModel.ComposeItem? = null, onClick: () -> Un
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .fillMaxWidth()
-                .padding(36.dp),
+                .fillMaxWidth(),
             fontSize = 24.sp)
     }
 

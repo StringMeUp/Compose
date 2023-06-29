@@ -1,5 +1,3 @@
-package com.sr.composemovies.navigation
-
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -15,6 +13,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.NavigationConstants
 import com.sr.composemovies.customSerializable
+import com.sr.composemovies.navigation.NavigationItem
 import com.sr.composemovies.ui.screens.HomeScreen
 import com.sr.composemovies.ui.screens.LogoScreen
 import com.sr.composemovies.ui.screens.NextScreen
