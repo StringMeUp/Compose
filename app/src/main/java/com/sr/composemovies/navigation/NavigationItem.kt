@@ -1,5 +1,8 @@
 package com.sr.composemovies.navigation
 
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.sr.composemovies.NavigationConstants
 import com.sr.composemovies.R
 
@@ -18,6 +21,11 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             icon = R.drawable.ic_next,
             name = R.string.detail_desc)
 
+    object Serializable :
+        NavigationItem(route = "serializable?${NavigationConstants.Arg_Serial}={${NavigationConstants.Arg_Serial}}",
+            icon = R.drawable.ic_close,
+            name = R.string.detail_serial)
+
     companion object {
         private fun all() = listOf(Main, Detail)
         fun findNavItem(route: String?): NavigationItem {
@@ -25,11 +33,19 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
         }
 
         fun withRouteArgs(navItem: NavigationItem, arg: String): String {
-            return "${navItem.route.substringBefore("/")}/$arg"
+            return "${navItem.route.substringBefore("{")}$arg"
         }
 
         fun withNullableRouteArgs(navItem: NavigationItem, arg: String? = null): String {
             return "${navItem.route.substringBefore("=")}=$arg"
         }
+
+        /** NOTE: The Jetpack Compose team doesn’t recommend passing Parcelable in the
+        navigation composable routes. Instead the route structure in Navigation
+        Compose has the best analog with a restful web service so developers
+        should use bookDetails/{bookid} not bookDetails/{a whole set of fieldsrepresenting a book}
+        which is essentially what passing a Parcelable is doing. */
+
+        /** With that being said look at AndroidExtensions File -> */
     }
 }

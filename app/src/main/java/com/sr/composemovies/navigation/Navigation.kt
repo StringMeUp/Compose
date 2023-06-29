@@ -14,9 +14,11 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.sr.composemovies.MainViewModel
 import com.sr.composemovies.NavigationConstants
-import com.sr.composemovies.ui.screens.LogoScreen
+import com.sr.composemovies.customSerializable
 import com.sr.composemovies.ui.screens.HomeScreen
+import com.sr.composemovies.ui.screens.LogoScreen
 import com.sr.composemovies.ui.screens.NextScreen
+import com.sr.composemovies.ui.screens.SerializableScreen
 
 //function to navigate with a navController
 @OptIn(ExperimentalAnimationApi::class)
@@ -117,6 +119,16 @@ fun MainNavigation(
             NextScreen(
                 navController = navController,
                 args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Next))
+        }
+
+        composable(route = NavigationItem.Serializable.route, arguments = listOf(
+            navArgument(name = NavigationConstants.Arg_Serial) {
+                type = NavType.StringType
+                nullable = true
+            })) { backStackEntry ->
+            SerializableScreen(
+                navController = navController,
+                args = backStackEntry.customSerializable(NavigationConstants.Arg_Serial))
         }
 
         /** Jetpack Compose without animations::
