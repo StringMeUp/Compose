@@ -63,9 +63,7 @@ fun LogoScreen(
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.s_color)),
                 onClick = {
                     navController?.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.Next,
-                        arg = "Pass me all night long!")) {
-                        popUpTo(NavigationItem.Main.route)
-                    }
+                        arg = "Pass me all night long!"))
                 }) {
                 Text(text = "Next", color = Color.White)
             }
