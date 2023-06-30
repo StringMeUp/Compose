@@ -141,12 +141,12 @@ fun MainNavigation(
 }
 
 inline fun Modifier.clickWithDebounce(
-    debounceInterval: Long = 3000,
+    debounceInterval: Long = 700,
     crossinline onClick: () -> Unit,
 ): Modifier {
     var lastClickTime = 0L
+    val currentTime = System.currentTimeMillis()
     return clickable {
-        val currentTime = System.currentTimeMillis()
         if ((currentTime - lastClickTime) < debounceInterval) return@clickable
         lastClickTime = currentTime
         onClick()
