@@ -53,7 +53,11 @@ fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.Compose
         .height(130.dp)
         .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
         .fillMaxWidth()
-        .clickWithDebounce { onItemClick(item) },
+        .clickWithDebounce {
+
+            onItemClick(item)
+
+                           },
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
         Row(horizontalArrangement = Arrangement.Start,

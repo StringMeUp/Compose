@@ -15,7 +15,7 @@ import com.sr.composemovies.NavigationConstants
 import com.sr.composemovies.customSerializable
 import com.sr.composemovies.navigation.NavigationItem
 import com.sr.composemovies.ui.screens.HomeScreen
-import com.sr.composemovies.ui.screens.LogoScreen
+import com.sr.composemovies.ui.screens.ArgumentsScreen
 import com.sr.composemovies.ui.screens.NextScreen
 import com.sr.composemovies.ui.screens.SerializableScreen
 
@@ -106,7 +106,7 @@ fun MainNavigation(
                     else -> null
                 }
             }) { backStackEntry ->
-            LogoScreen(navController = navController,
+            ArgumentsScreen(navController = navController,
                 value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
         }
 
@@ -141,12 +141,12 @@ fun MainNavigation(
 }
 
 inline fun Modifier.clickWithDebounce(
-    debounceInterval: Long = 3000,
+    debounceInterval: Long = 700,
     crossinline onClick: () -> Unit,
 ): Modifier {
     var lastClickTime = 0L
+    val currentTime = System.currentTimeMillis()
     return clickable {
-        val currentTime = System.currentTimeMillis()
         if ((currentTime - lastClickTime) < debounceInterval) return@clickable
         lastClickTime = currentTime
         onClick()
