@@ -32,7 +32,7 @@ fun NullableArgsScreen(navController: NavController, args: String?) {
     SetUpView(args = args) {
 
         val route = withCustomSerializable(NavigationItem.SerializableArgs,
-            MainViewModel.ComposeItem("WLA:: Testing custom serializable.", drawable.ic_close))
+            MainViewModel.ComposeItem("Custom serializable.", drawable.ic_close))
         navController.navigate(route = route) {
             popUpTo(NavigationItem.Main.route)
         }
