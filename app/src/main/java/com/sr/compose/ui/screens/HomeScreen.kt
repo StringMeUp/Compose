@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -33,9 +34,9 @@ fun HomeScreen(
         items(viewModel.items.value) {
             CardRow(item = it) { item ->
                 when (item.text) {
-                    "Detail: Logo" -> {
+                    "Detail: Custom navigation" -> {
                         navController.navigate(NavigationItem.withRouteArgs(
-                            navItem = NavigationItem.Detail,
+                            navItem = NavigationItem.DefaultArgs,
                             arg = "You've just passed default arguments."))
                     }
                     "Detail: Jet" -> {}
@@ -54,27 +55,38 @@ fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.Compose
         .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
         .fillMaxWidth()
         .clickWithDebounce {
-
             onItemClick(item)
-
-                           },
+        },
         shape = RoundedCornerShape(12.dp),
         elevation = 4.dp) {
-        Row(horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically) {
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+            val (image, text) = createRefs()
             Image(
                 painterResource(id = item.image),
                 contentDescription = item.text,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(100.dp),
+                    .width(100.dp)
+                    .constrainAs(image) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    },
                 contentScale = ContentScale.FillHeight)
-        }
 
-        Text(text = item.text,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .wrapContentHeight()
-                .wrapContentWidth())
+            Text(
+                text = item.text,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .constrainAs(text) {
+                        start.linkTo(image.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    },
+            )
+        }
     }
 }

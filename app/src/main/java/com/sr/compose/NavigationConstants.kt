@@ -1,7 +1,7 @@
 package com.sr.compose
 
 object NavigationConstants {
-    const val Arg_Detail = "arg_detail_value"
-    const val Arg_Next = "arg_next_value"
-    const val Arg_Serial = "arg_serial_value"
+    const val Arg_Default = "arg_default_value"
+    const val Arg_Nullable = "arg_nullable_value"
+    const val Arg_Serializable = "arg_serializable_value"
 }

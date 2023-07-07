@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +28,7 @@ import com.sr.compose.navigation.NavigationItem
 
 @Composable
 @Preview(showBackground = true)
-fun ArgumentsScreen(
+fun DefaultArgsScreen(
     navController: NavController? = null,
     value: String? = null,
     viewModel: MainViewModel = viewModel(),
@@ -37,7 +38,7 @@ fun ArgumentsScreen(
         .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)) {
         val (title, descr, image, button) = createRefs()
 
-        Text(text = "Arguments: $value",
+        Text(text = "Default Arguments: $value",
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
@@ -46,6 +47,7 @@ fun ArgumentsScreen(
             },
             color = Color.Black,
             fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center)
 
         AsyncImage(
@@ -92,8 +94,8 @@ fun ArgumentsScreen(
                 .padding(24.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
-                navController?.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.Next,
-                    arg = "Pass me all night long!"))
+                navController?.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.NullableArgs,
+                    arg = "Nullable arguments: Successfully passed nullable args."))
             }) {
             Text(text = "Try nullable arguments?", color = Color.White)
         }

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,11 +26,12 @@ import com.sr.compose.R.*
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.withCustomSerializable
 
+
 @Composable
-fun NextScreen(navController: NavController, args: String?) {
+fun NullableArgsScreen(navController: NavController, args: String?) {
     SetUpView(args = args) {
 
-        val route = navController.withCustomSerializable(NavigationItem.Serializable,
+        val route = withCustomSerializable(NavigationItem.SerializableArgs,
             MainViewModel.ComposeItem("WLA:: Testing custom serializable.", drawable.ic_close))
         navController.navigate(route = route) {
             popUpTo(NavigationItem.Main.route)
@@ -52,7 +54,8 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                     end.linkTo(parent.end)
                 }
                 .fillMaxWidth(),
-            fontSize = 24.sp)
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold)
 
         Card(shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -81,7 +84,7 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                 .padding(24.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = { onClick() }) {
-            Text(text = "Navigate with serializable", color = Color.White)
+            Text(text = "Navigate with serializable?!", color = Color.White)
         }
     }
 }

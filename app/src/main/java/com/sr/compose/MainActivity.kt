@@ -59,7 +59,7 @@ fun MoviesApp(
             NavigationItem.Main.route -> {
                 viewModel.setTopBarState(true)
             }
-            NavigationItem.Detail.route -> {
+            NavigationItem.DefaultArgs.route -> {
                 viewModel.setTopBarState(false)
             }
         }

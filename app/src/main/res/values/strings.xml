@@ -2,5 +2,6 @@
     <string name="app_name">Compose</string>
     <string name="main_desc">Compose at home</string>
     <string name="detail_desc">At sea</string>
+    <string name="nullable_desc">At nowhere</string>
     <string name="detail_serial">At serializable</string>
 </resources>

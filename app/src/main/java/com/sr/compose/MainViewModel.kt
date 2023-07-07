@@ -16,8 +16,8 @@ class MainViewModel @Inject constructor() : ViewModel() {
         val image: Int,
     ) : Parcelable {
         companion object {
-            fun generate() = listOf<ComposeItem>(
-                ComposeItem("Detail: Logo", R.drawable.logo),
+            fun generate() = listOf(
+                ComposeItem("Detail: Custom navigation", R.drawable.logo),
                 ComposeItem("Detail: Jet", R.drawable.jet),
                 ComposeItem("Detail: Ui", R.drawable.ui),
                 ComposeItem("Detail: Material", R.drawable.material)

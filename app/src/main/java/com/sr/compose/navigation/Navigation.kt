@@ -4,27 +4,21 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.sr.compose.MainViewModel
 import com.sr.compose.NavigationConstants
 import com.sr.compose.customSerializable
 import com.sr.compose.navigation.NavigationItem
-import com.sr.compose.ui.screens.HomeScreen
-import com.sr.compose.ui.screens.ArgumentsScreen
-import com.sr.compose.ui.screens.NextScreen
-import com.sr.compose.ui.screens.SerializableScreen
+import com.sr.compose.ui.screens.*
 
 //function to navigate with a navController
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigation(
-    navController: NavHostController,
-    viewModel: MainViewModel = viewModel(),
+    navController: NavHostController
 ) {
     //navHost with start destination
     AnimatedNavHost(navController = navController, startDestination = NavigationItem.Main.route) {
@@ -32,7 +26,7 @@ fun MainNavigation(
             route = NavigationItem.Main.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    NavigationItem.Detail.route ->
+                    NavigationItem.DefaultArgs.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
                             animationSpec = tween(500))
                     else -> null
@@ -40,7 +34,7 @@ fun MainNavigation(
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    NavigationItem.Detail.route ->
+                    NavigationItem.DefaultArgs.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
                             animationSpec = tween(500))
                     else -> null
@@ -48,7 +42,7 @@ fun MainNavigation(
             },
             popEnterTransition = {
                 when (initialState.destination.route) {
-                    NavigationItem.Detail.route ->
+                    NavigationItem.DefaultArgs.route ->
                         slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
                             animationSpec = tween(500))
                     else -> null
@@ -56,7 +50,7 @@ fun MainNavigation(
             },
             popExitTransition = {
                 when (targetState.destination.route) {
-                    NavigationItem.Detail.route ->
+                    NavigationItem.DefaultArgs.route ->
                         slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
                             animationSpec = tween(500))
                     else -> null
@@ -67,9 +61,9 @@ fun MainNavigation(
         }
 
         composable(
-            route = NavigationItem.Detail.route,
+            route = NavigationItem.DefaultArgs.route,
             arguments = listOf(
-                navArgument(name = NavigationConstants.Arg_Detail) {
+                navArgument(name = NavigationConstants.Arg_Default) {
                     type = NavType.StringType
                     defaultValue = "Default"
                 }
@@ -106,28 +100,28 @@ fun MainNavigation(
                     else -> null
                 }
             }) { backStackEntry ->
-            ArgumentsScreen(navController = navController,
-                value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Detail))
+            DefaultArgsScreen(navController = navController,
+                value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Default))
         }
 
-        composable(route = NavigationItem.Next.route, arguments = listOf(
-            navArgument(name = NavigationConstants.Arg_Next) {
+        composable(route = NavigationItem.NullableArgs.route, arguments = listOf(
+            navArgument(name = NavigationConstants.Arg_Nullable) {
                 type = NavType.StringType
                 nullable = true
             })) { backStackEntry ->
-            NextScreen(
+            NullableArgsScreen(
                 navController = navController,
-                args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Next))
+                args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Nullable))
         }
 
-        composable(route = NavigationItem.Serializable.route, arguments = listOf(
-            navArgument(name = NavigationConstants.Arg_Serial) {
+        composable(route = NavigationItem.SerializableArgs.route, arguments = listOf(
+            navArgument(name = NavigationConstants.Arg_Serializable) {
                 type = NavType.StringType
                 nullable = true
             })) { backStackEntry ->
             SerializableScreen(
                 navController = navController,
-                args = backStackEntry.customSerializable(NavigationConstants.Arg_Serial))
+                args = backStackEntry.customSerializable(NavigationConstants.Arg_Serializable))
         }
 
         /** Jetpack Compose without animations::
