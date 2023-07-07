@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,39 +16,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import clickWithDebounce
 import com.sr.compose.MainViewModel
-import com.sr.compose.navigation.NavigationItem
+import com.sr.compose.navigation.ComposeItem
+import com.sr.compose.navigation.clickWithDebounce
 
 
 @Composable
 @Preview(showBackground = true)
 fun HomeScreen(
-    navController: NavController = rememberNavController(),
     viewModel: MainViewModel = viewModel(),
+    handleOnItemClick: (item: ComposeItem) -> Unit = {},
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 70.dp)) {
         items(viewModel.items.value) {
             CardRow(item = it) { item ->
-                when (item.text) {
-                    "Detail: Custom navigation" -> {
-                        navController.navigate(NavigationItem.withRouteArgs(
-                            navItem = NavigationItem.DefaultArgs,
-                            arg = "You've just passed default arguments."))
-                    }
-                    "Detail: Jet" -> {}
-                    "Detail: Ui" -> {}
-                    "Detail: Material" -> {}
-                }
+                handleOnItemClick(item)
             }
         }
     }
 }
 
 @Composable
-fun CardRow(item: MainViewModel.ComposeItem, onItemClick: (MainViewModel.ComposeItem) -> Unit) {
+fun CardRow(item: ComposeItem, onItemClick: (ComposeItem) -> Unit) {
     Card(modifier = Modifier
         .height(130.dp)
         .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)

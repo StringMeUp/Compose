@@ -1,29 +1,13 @@
 package com.sr.compose
 
-import android.os.Parcelable
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.sr.compose.navigation.ComposeItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor() : ViewModel() {
-
-    @Parcelize
-    data class ComposeItem(
-        val text: String,
-        val image: Int,
-    ) : Parcelable {
-        companion object {
-            fun generate() = listOf(
-                ComposeItem("Detail: Custom navigation", R.drawable.logo),
-                ComposeItem("Detail: Jet", R.drawable.jet),
-                ComposeItem("Detail: Ui", R.drawable.ui),
-                ComposeItem("Detail: Material", R.drawable.material)
-            )
-        }
-    }
 
     private var _topBarState = mutableStateOf(true)
     val topBarState get() = _topBarState

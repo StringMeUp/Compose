@@ -1,6 +1,6 @@
 package com.sr.compose
 
-import MainNavigation
+import com.sr.compose.navigation.MainNavigation
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -67,7 +67,7 @@ fun MoviesApp(
         Scaffold(topBar = {
             AnimateTopBar(viewModel, navController)
         }) {
-            Column(modifier = Modifier.padding(top = 70.dp)) {
+            Column{
                 MainNavigation(navController = navController)
             }
         }
