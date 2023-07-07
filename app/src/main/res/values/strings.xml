@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ComposeMovies</string>
+    <string name="app_name">Compose</string>
     <string name="main_desc">Compose at home</string>
     <string name="detail_desc">At sea</string>
     <string name="detail_serial">At serializable</string>

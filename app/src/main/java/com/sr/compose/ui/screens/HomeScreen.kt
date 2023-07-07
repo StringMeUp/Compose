@@ -1,4 +1,4 @@
-package com.sr.composemovies.ui.screens
+package com.sr.compose.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,8 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import clickWithDebounce
-import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.navigation.NavigationItem
+import com.sr.compose.MainViewModel
+import com.sr.compose.navigation.NavigationItem
 
 
 @Composable

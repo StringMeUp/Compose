@@ -1,4 +1,4 @@
-package com.sr.composemovies
+package com.sr.compose
 
 object NavigationConstants {
     const val Arg_Detail = "arg_detail_value"

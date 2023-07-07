@@ -10,14 +10,14 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.NavigationConstants
-import com.sr.composemovies.customSerializable
-import com.sr.composemovies.navigation.NavigationItem
-import com.sr.composemovies.ui.screens.HomeScreen
-import com.sr.composemovies.ui.screens.ArgumentsScreen
-import com.sr.composemovies.ui.screens.NextScreen
-import com.sr.composemovies.ui.screens.SerializableScreen
+import com.sr.compose.MainViewModel
+import com.sr.compose.NavigationConstants
+import com.sr.compose.customSerializable
+import com.sr.compose.navigation.NavigationItem
+import com.sr.compose.ui.screens.HomeScreen
+import com.sr.compose.ui.screens.ArgumentsScreen
+import com.sr.compose.ui.screens.NextScreen
+import com.sr.compose.ui.screens.SerializableScreen
 
 //function to navigate with a navController
 @OptIn(ExperimentalAnimationApi::class)
