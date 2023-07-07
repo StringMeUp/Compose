@@ -1,4 +1,4 @@
-package com.sr.composemovies
+package com.sr.compose
 
 import MainNavigation
 import android.annotation.SuppressLint
@@ -30,8 +30,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-import com.sr.composemovies.navigation.NavigationItem
-import com.sr.composemovies.ui.theme.ComposeMoviesTheme
+import com.sr.compose.navigation.NavigationItem
+import com.sr.compose.ui.theme.ComposeMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

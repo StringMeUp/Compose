@@ -1,10 +1,7 @@
-package com.sr.composemovies.navigation
+package com.sr.compose.navigation
 
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import com.google.gson.Gson
-import com.sr.composemovies.NavigationConstants
-import com.sr.composemovies.R
+import com.sr.compose.NavigationConstants
+import com.sr.compose.R
 
 sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
     object Main :

@@ -1,10 +1,10 @@
-package com.sr.composemovies
+package com.sr.compose
 
 import android.content.SharedPreferences
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import com.sr.composemovies.navigation.NavigationItem
+import com.sr.compose.navigation.NavigationItem
 
 
 //prefs

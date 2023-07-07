@@ -1,4 +1,4 @@
-package com.sr.composemovies
+package com.sr.compose
 
 import android.os.Parcelable
 import androidx.compose.runtime.mutableStateOf

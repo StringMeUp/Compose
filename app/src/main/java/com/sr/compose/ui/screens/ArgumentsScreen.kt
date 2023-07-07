@@ -1,4 +1,4 @@
-package com.sr.composemovies.ui.screens
+package com.sr.compose.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,9 +21,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.R
-import com.sr.composemovies.navigation.NavigationItem
+import com.sr.compose.MainViewModel
+import com.sr.compose.R.*
+import com.sr.compose.navigation.NavigationItem
 
 @Composable
 @Preview(showBackground = true)
@@ -90,7 +90,7 @@ fun ArgumentsScreen(
 
                 }
                 .padding(24.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.s_color)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
                 navController?.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.Next,
                     arg = "Pass me all night long!"))

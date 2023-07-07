@@ -1,4 +1,4 @@
-package com.sr.composemovies.ui.screens
+package com.sr.compose.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,21 +18,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.R
-import com.sr.composemovies.navigation.NavigationItem
-import com.sr.composemovies.withCustomSerializable
-import java.lang.ref.Reference
+import com.sr.compose.MainViewModel
+import com.sr.compose.R.*
+import com.sr.compose.navigation.NavigationItem
+import com.sr.compose.withCustomSerializable
 
 @Composable
 fun NextScreen(navController: NavController, args: String?) {
     SetUpView(args = args) {
 
         val route = navController.withCustomSerializable(NavigationItem.Serializable,
-            MainViewModel.ComposeItem("WLA:: Testing custom serializable.", R.drawable.ic_close))
+            MainViewModel.ComposeItem("WLA:: Testing custom serializable.", drawable.ic_close))
         navController.navigate(route = route) {
             popUpTo(NavigationItem.Main.route)
         }
@@ -66,7 +64,7 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                     end.linkTo(parent.end)
                 }) {
             Image(modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(id = R.drawable.all_night),
+                painter = painterResource(id = drawable.all_night),
                 contentDescription = "",
                 contentScale = ContentScale.Crop)
         }
@@ -81,7 +79,7 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.s_color)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = { onClick() }) {
             Text(text = "Navigate with serializable", color = Color.White)
         }

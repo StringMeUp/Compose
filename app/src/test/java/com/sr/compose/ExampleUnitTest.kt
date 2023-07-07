@@ -1,4 +1,4 @@
-package com.sr.composemovies
+package com.sr.compose
 
 import org.junit.Test
 

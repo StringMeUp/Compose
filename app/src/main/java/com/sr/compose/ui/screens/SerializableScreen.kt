@@ -1,4 +1,4 @@
-package com.sr.composemovies.ui.screens
+package com.sr.compose.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ButtonDefaults
@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import com.sr.composemovies.MainViewModel
-import com.sr.composemovies.R
+import com.sr.compose.MainViewModel
+import com.sr.compose.R.*
 
 @Composable
 fun SerializableScreen(navController: NavController, args: MainViewModel.ComposeItem?) {
@@ -69,7 +69,7 @@ fun SetUpSerializable(args: MainViewModel.ComposeItem? = null, onClick: () -> Un
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.s_color)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = { onClick() }) {
             Text(text = "Done", color = Color.White)
         }

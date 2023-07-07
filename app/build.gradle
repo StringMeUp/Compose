@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.sr.composemovies'
+    namespace 'com.sr.compose'
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.sr.composemovies"
+        applicationId "com.sr.compose"
         minSdk 26
         targetSdk 33
         versionCode 1
