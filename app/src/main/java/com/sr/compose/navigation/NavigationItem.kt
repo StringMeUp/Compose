@@ -7,24 +7,24 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
     object Main :
         NavigationItem(route = "main", icon = R.drawable.ic_siding, name = R.string.main_desc)
 
-    object Detail :
+    object DefaultArgs :
     /** Navigate with a default parameter */
-        NavigationItem(route = "detail/{${NavigationConstants.Arg_Detail}}",
+        NavigationItem(route = "default/{${NavigationConstants.Arg_Default}}",
             icon = R.drawable.ic_boat,
             name = R.string.detail_desc)
 
-    object Next :
-        NavigationItem(route = "next?${NavigationConstants.Arg_Next}={${NavigationConstants.Arg_Next}}",
+    object NullableArgs :
+        NavigationItem(route = "nullable?${NavigationConstants.Arg_Nullable}={${NavigationConstants.Arg_Nullable}}",
             icon = R.drawable.ic_next,
-            name = R.string.detail_desc)
+            name = R.string.nullable_desc)
 
-    object Serializable :
-        NavigationItem(route = "serializable?${NavigationConstants.Arg_Serial}={${NavigationConstants.Arg_Serial}}",
+    object SerializableArgs :
+        NavigationItem(route = "serializable?${NavigationConstants.Arg_Serializable}={${NavigationConstants.Arg_Serializable}}",
             icon = R.drawable.ic_close,
             name = R.string.detail_serial)
 
     companion object {
-        private fun all() = listOf(Main, Detail)
+        private fun all() = listOf(Main, DefaultArgs)
         fun findNavItem(route: String?): NavigationItem {
             return all().find { it.route == route } ?: Main
         }

@@ -2,7 +2,6 @@ package com.sr.compose
 
 import android.content.SharedPreferences
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.sr.compose.navigation.NavigationItem
 
@@ -30,7 +29,7 @@ inline fun <reified T> NavBackStackEntry.customSerializable(key: String): T? {
     }
 }
 
-inline fun <reified T> NavController.withCustomSerializable(navItem: NavigationItem, arg: T): String {
+inline fun <reified T> withCustomSerializable(navItem: NavigationItem, arg: T): String {
     val gson: Gson = Gson()
     val jsonString = gson.toJson(arg)
     return "${navItem.route.substringBefore("=")}=$jsonString"
