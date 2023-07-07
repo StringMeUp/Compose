@@ -21,21 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import com.sr.compose.MainViewModel
-import com.sr.compose.R.*
+import com.sr.compose.R.color
+import com.sr.compose.R.drawable
+import com.sr.compose.navigation.ComposeItem
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.withCustomSerializable
 
 
 @Composable
-fun NullableArgsScreen(navController: NavController, args: String?) {
+fun NullableArgsScreen(args: String?, handleCustomSerializableCLick: () -> Unit = {}) {
     SetUpView(args = args) {
-
-        val route = withCustomSerializable(NavigationItem.SerializableArgs,
-            MainViewModel.ComposeItem("Custom serializable.", drawable.ic_close))
-        navController.navigate(route = route) {
-            popUpTo(NavigationItem.Main.route)
-        }
+        handleCustomSerializableCLick()
     }
 }
 

@@ -1,6 +1,9 @@
 package com.sr.compose.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
@@ -23,15 +26,15 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sr.compose.MainViewModel
-import com.sr.compose.R.*
+import com.sr.compose.R.color
 import com.sr.compose.navigation.NavigationItem
 
 @Composable
 @Preview(showBackground = true)
 fun DefaultArgsScreen(
-    navController: NavController? = null,
-    value: String? = null,
     viewModel: MainViewModel = viewModel(),
+    value: String? = null,
+    handleNavigation: (arg: String) -> Unit = {},
 ) {
     ConstraintLayout(modifier = Modifier
         .fillMaxSize()
@@ -94,8 +97,7 @@ fun DefaultArgsScreen(
                 .padding(24.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
-                navController?.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.NullableArgs,
-                    arg = "Nullable arguments: Successfully passed nullable args."))
+                handleNavigation("Nullable arguments: Successfully passed nullable args.")
             }) {
             Text(text = "Try nullable arguments?", color = Color.White)
         }

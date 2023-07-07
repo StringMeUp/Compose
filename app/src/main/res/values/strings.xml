@@ -4,4 +4,5 @@
     <string name="detail_desc">At sea</string>
     <string name="nullable_desc">At nowhere</string>
     <string name="detail_serial">At serializable</string>
+    <string name="detail_parcel">At parcelable</string>
 </resources>
