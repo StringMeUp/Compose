@@ -3,9 +3,8 @@ package com.sr.compose.navigation
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -60,16 +59,19 @@ fun MainNavigation(
                 }
             }
         ) {
+            val arguments = stringResource(R.string.default_args)
             HomeScreen { item ->
                 when (item.text) {
-                    "Detail: Custom navigation" -> {
+                    "Navigation" -> {
                         navController.navigate(NavigationItem.withRouteArgs(
                             navItem = NavigationItem.DefaultArgs,
-                            arg = "You've just passed default arguments."))
+                            arg = arguments))
                     }
-                    "Detail: Jet" -> {}
-                    "Detail: Ui" -> {}
-                    "Detail: Material" -> {}
+                    "Jet SavedState" -> {
+
+                    }
+                    "Ui" -> {}
+                    "Material" -> {}
                 }
             }
         }
@@ -157,18 +159,5 @@ fun MainNavigation(
         composable(route = NavigationItem.Detail.route) {
         DetailScreen()
         }*/
-    }
-}
-
-inline fun Modifier.clickWithDebounce(
-    debounceInterval: Long = 700,
-    crossinline onClick: () -> Unit,
-): Modifier {
-    var lastClickTime = 0L
-    val currentTime = System.currentTimeMillis()
-    return clickable {
-        if ((currentTime - lastClickTime) < debounceInterval) return@clickable
-        lastClickTime = currentTime
-        onClick()
     }
 }

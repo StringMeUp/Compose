@@ -32,7 +32,6 @@ import com.sr.compose.navigation.NavigationItem
 @Composable
 @Preview(showBackground = true)
 fun DefaultArgsScreen(
-    viewModel: MainViewModel = viewModel(),
     value: String? = null,
     handleNavigation: (arg: String) -> Unit = {},
 ) {
@@ -42,12 +41,14 @@ fun DefaultArgsScreen(
         val (title, descr, image, button) = createRefs()
 
         Text(text = "Default Arguments: $value",
-            modifier = Modifier.constrainAs(title) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
+            modifier = Modifier
+                .padding(top = 24.dp)
+                .constrainAs(title) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
 
-            },
+                },
             color = Color.Black,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,

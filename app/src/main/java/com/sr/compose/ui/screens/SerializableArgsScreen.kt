@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,7 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
             color = Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 24.dp)
                 .constrainAs(title) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -61,16 +63,7 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
                 end.linkTo(parent.end)
             })
 
-        Text(text =
-        "Passing custom Serializables/Parcelables is strictly speaking against core android principles, " +
-                "and also not recommended by the Jetpack Compose team. It is strongly recommended that you decouple the Navigation code from your composable destinations to enable testing each composable in isolation, separate from the NavHost composable.\n" +
-                "\n" +
-                "This means that you shouldn't pass the navController directly into any composable and instead pass navigation callbacks as parameters. This allows all your composables to be individually testable, as they don't require an instance of navController in tests.\n" +
-                "\n" +
-                "The level of indirection provided by the composable lambda is what allows you to separate your Navigation code from the composable itself. This works in two directions:\n" +
-                "\n" +
-                "Pass only parsed arguments into your composable\n" +
-                "Pass lambdas that should be triggered by the composable to navigate, rather than the NavController itself.",
+        Text(text = stringResource(id = R.string.custom_serial),
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
@@ -113,4 +106,3 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
         }
     }
 }
-
