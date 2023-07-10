@@ -44,6 +44,7 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
+                .padding(top = 24.dp)
                 .constrainAs(argText) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)

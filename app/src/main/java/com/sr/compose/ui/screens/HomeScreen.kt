@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sr.compose.MainViewModel
+import com.sr.compose.clickWithDebounce
 import com.sr.compose.navigation.ComposeItem
-import com.sr.compose.navigation.clickWithDebounce
 
 
 @Composable
@@ -27,7 +27,9 @@ fun HomeScreen(
     viewModel: MainViewModel = viewModel(),
     handleOnItemClick: (item: ComposeItem) -> Unit = {},
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 70.dp)) {
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 70.dp)) {
         items(viewModel.items.value) {
             CardRow(item = it) { item ->
                 handleOnItemClick(item)

@@ -5,4 +5,8 @@
     <string name="nullable_desc">At nowhere</string>
     <string name="detail_serial">At serializable</string>
     <string name="detail_parcel">At parcelable</string>
+    <string name="custom_serial">"Passing custom Serializables/Parcelables is strictly speaking against core android principles, and also not recommended by the Jetpack Compose team. It is strongly recommended that you decouple the Navigation code from your composable destinations to enable testing each composable in isolation, separate from the NavHost composable.
+                \nThis means that you shouldn\'t pass the navController directly into any composable and instead pass navigation callbacks as parameters. This allows all your composables to be individually testable, as they don't require an instance of navController in tests.
+                \nThe level of indirection provided by the composable lambda is what allows you to separate your Navigation code from the composable itself. This works in two directions: Pass only parsed arguments into your composablePass lambdas that should be triggered by the composable to navigate, rather than the NavController itself."</string>
+    <string name="default_args">You\'ve just passed default arguments.</string>
 </resources>

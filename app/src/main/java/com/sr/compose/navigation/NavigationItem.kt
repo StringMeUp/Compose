@@ -13,10 +13,10 @@ data class ComposeItem(
 ) : Parcelable {
     companion object {
         fun generate() = listOf(
-            ComposeItem("Detail: Custom navigation", R.drawable.logo),
-            ComposeItem("Detail: Jet", R.drawable.jet),
-            ComposeItem("Detail: Ui", R.drawable.ui),
-            ComposeItem("Detail: Material", R.drawable.material)
+            ComposeItem("Navigation", R.drawable.logo),
+            ComposeItem("Jet", R.drawable.jet),
+            ComposeItem("Ui", R.drawable.ui),
+            ComposeItem("Material", R.drawable.material)
         )
     }
 }
