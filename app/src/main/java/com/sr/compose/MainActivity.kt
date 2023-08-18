@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.sr.compose.navigation.ComposeItem
 
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.ui.theme.ComposeMoviesTheme
@@ -40,9 +41,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val viewModel: MainViewModel = viewModel()
-            MoviesApp(
-                isVisible = { viewModel.topBarState.value },
-                setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) })
+            MoviesApp(isVisible = { viewModel.topBarState.value },
+                setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) },
+                composeItems = { viewModel.items.value })
         }
     }
 }
@@ -54,11 +55,20 @@ class MainActivity : ComponentActivity() {
 fun MoviesApp(
     isVisible: () -> Boolean = { false },
     setTopBar: (isVisible: Boolean) -> Unit = {},
+    composeItems: () -> List<ComposeItem> = { emptyList<ComposeItem>() },
 ) {
     ComposeMoviesTheme {
 
         val navController = rememberAnimatedNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+        Scaffold(topBar = {
+            AnimateTopBar(isVisible, navController)
+        }) {
+            Column {
+                MainNavigation(navController = navController, composeItems = { composeItems() })
+            }
+        }
 
         when (navBackStackEntry?.destination?.route) {
             NavigationItem.Main.route -> {
@@ -67,14 +77,6 @@ fun MoviesApp(
 
             NavigationItem.DefaultArgs.route -> {
                 setTopBar(false)
-            }
-        }
-
-        Scaffold(topBar = {
-            AnimateTopBar(isVisible, navController)
-        }) {
-            Column {
-                MainNavigation(navController = navController)
             }
         }
     }
@@ -90,7 +92,7 @@ private fun AnimateTopBar(
         enter = slideInVertically(initialOffsetY = { -it }, animationSpec = tween(1000)),
         exit = slideOutVertically(targetOffsetY = { -it }, animationSpec = tween(1000))
     ) {
-        AddTopAppBar(
+        TopAppBar(
             getIcon = { NavigationItem.findNavItem(navController.currentDestination?.route).icon },
             getName = { NavigationItem.findNavItem(navController.currentDestination?.route).name }
         )
@@ -99,7 +101,7 @@ private fun AnimateTopBar(
 
 @Composable
 @Preview
-fun AddTopAppBar(
+fun TopAppBar(
     getIcon: () -> Int = { R.drawable.ic_boat },
     getName: () -> Int = { R.string.app_name },
 ) {
