@@ -24,9 +24,9 @@ import com.sr.compose.navigation.ComposeItem
 @Composable
 @Preview(showBackground = true)
 fun HomeScreen(
-    viewModel: MainViewModel = viewModel(),
     handleOnItemClick: (item: ComposeItem) -> Unit = {},
 ) {
+    val viewModel: MainViewModel = viewModel()
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(top = 70.dp)) {

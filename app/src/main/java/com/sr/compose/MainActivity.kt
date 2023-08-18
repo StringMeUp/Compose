@@ -39,7 +39,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoviesApp()
+            val viewModel: MainViewModel = viewModel()
+            MoviesApp(
+                isVisible = { viewModel.topBarState.value },
+                setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) })
         }
     }
 }
@@ -49,25 +52,28 @@ class MainActivity : ComponentActivity() {
 @Composable
 @Preview
 fun MoviesApp(
-    viewModel: MainViewModel = viewModel(),
+    isVisible: () -> Boolean = { false },
+    setTopBar: (isVisible: Boolean) -> Unit = {},
 ) {
     ComposeMoviesTheme {
+
         val navController = rememberAnimatedNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         when (navBackStackEntry?.destination?.route) {
             NavigationItem.Main.route -> {
-                viewModel.setTopBarState(true)
+                setTopBar(true)
             }
+
             NavigationItem.DefaultArgs.route -> {
-                viewModel.setTopBarState(false)
+                setTopBar(false)
             }
         }
 
         Scaffold(topBar = {
-            AnimateTopBar(viewModel, navController)
+            AnimateTopBar(isVisible, navController)
         }) {
-            Column{
+            Column {
                 MainNavigation(navController = navController)
             }
         }
@@ -76,25 +82,34 @@ fun MoviesApp(
 
 @Composable
 private fun AnimateTopBar(
-    viewModel: MainViewModel,
+    isVisible: () -> Boolean = { false },
     navController: NavHostController,
 ) {
     AnimatedVisibility(
-        visible = viewModel.topBarState.value,
+        visible = isVisible(),
         enter = slideInVertically(initialOffsetY = { -it }, animationSpec = tween(1000)),
-        exit = slideOutVertically(targetOffsetY = { -it }, animationSpec = tween(1000))) {
-        AddTopAppBar(navController = navController)
+        exit = slideOutVertically(targetOffsetY = { -it }, animationSpec = tween(1000))
+    ) {
+        AddTopAppBar(
+            getIcon = { NavigationItem.findNavItem(navController.currentDestination?.route).icon },
+            getName = { NavigationItem.findNavItem(navController.currentDestination?.route).name }
+        )
     }
 }
 
 @Composable
-fun AddTopAppBar(navController: NavHostController) {
+@Preview
+fun AddTopAppBar(
+    getIcon: () -> Int = { R.drawable.ic_boat },
+    getName: () -> Int = { R.string.app_name },
+) {
     TopAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         modifier = Modifier
             .padding(bottom = 12.dp, start = 5.dp, top = 5.dp, end = 5.dp)
-            .shadow(0.dp)) {
+            .shadow(0.dp)
+    ) {
 
         Card(
             elevation = 5.dp,
@@ -102,19 +117,17 @@ fun AddTopAppBar(navController: NavHostController) {
             backgroundColor = colorResource(id = R.color.s_color),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(3.dp)) {
+                .padding(3.dp)
+        ) {
 
             ConstraintLayout(
-                modifier = Modifier.fillMaxSize()) {
+                modifier = Modifier.fillMaxSize()
+            ) {
                 val (image, text) = createRefs()
-                val imageId =
-                    NavigationItem.findNavItem(navController.currentDestination?.route).icon
-                val nameRes =
-                    NavigationItem.findNavItem(navController.currentDestination?.route).name
 
                 Image(
-                    painter = painterResource(id = imageId),
-                    contentDescription = stringResource(id = nameRes),
+                    painter = painterResource(id = getIcon()),
+                    contentDescription = stringResource(id = getName()),
                     modifier = Modifier
                         .padding(start = 14.dp)
                         .constrainAs(image) {
@@ -124,7 +137,7 @@ fun AddTopAppBar(navController: NavHostController) {
                         }
                 )
 
-                Text(text = stringResource(id = nameRes),
+                Text(text = stringResource(id = getName()),
                     color = Color.White,
                     modifier = Modifier
                         .padding(8.dp)
