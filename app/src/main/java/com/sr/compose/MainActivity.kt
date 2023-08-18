@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 fun MoviesApp(
     isVisible: () -> Boolean = { false },
     setTopBar: (isVisible: Boolean) -> Unit = {},
-    composeItems: () -> List<ComposeItem> = { emptyList<ComposeItem>() },
+    composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
 ) {
     ComposeMoviesTheme {
 
