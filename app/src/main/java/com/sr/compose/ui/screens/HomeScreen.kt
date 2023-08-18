@@ -16,11 +16,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.Lifecycle
 import com.sr.compose.clickWithDebounce
 import com.sr.compose.navigation.ComposeItem
 
@@ -31,12 +33,15 @@ fun HomeScreen(
     composeItems: () -> List<ComposeItem> = { emptyList() },
     handleOnItemClick: (item: ComposeItem) -> Unit = {},
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(top = 70.dp)) {
         items(composeItems()) {
             CardRow(item = it) { item ->
-                handleOnItemClick(item)
+                if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)){
+                    handleOnItemClick(item)
+                }
             }
         }
     }
