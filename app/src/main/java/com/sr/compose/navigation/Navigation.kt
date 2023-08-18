@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.sr.compose.MainViewModel
 import com.sr.compose.NavigationConstants
 import com.sr.compose.R
 import com.sr.compose.customSerializable
@@ -21,6 +22,7 @@ import com.sr.compose.withCustomSerializable
 @Composable
 fun MainNavigation(
     navController: NavHostController,
+    composeItems: () -> List<ComposeItem> = { emptyList() },
 ) {
     //navHost with start destination
     AnimatedNavHost(navController = navController, startDestination = NavigationItem.Main.route) {
@@ -29,47 +31,64 @@ fun MainNavigation(
             enterTransition = {
                 when (initialState.destination.route) {
                     NavigationItem.DefaultArgs.route ->
-                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(500))
+                        slideIntoContainer(
+                            AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     NavigationItem.DefaultArgs.route ->
-                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(500))
+                        slideOutOfContainer(
+                            AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             popEnterTransition = {
                 when (initialState.destination.route) {
                     NavigationItem.DefaultArgs.route ->
-                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(500))
+                        slideIntoContainer(
+                            AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             popExitTransition = {
                 when (targetState.destination.route) {
                     NavigationItem.DefaultArgs.route ->
-                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(500))
+                        slideOutOfContainer(
+                            AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             }
         ) {
             val arguments = stringResource(R.string.default_args)
-            HomeScreen { item ->
+            HomeScreen(composeItems = { composeItems() }) { item ->
                 when (item.text) {
                     "Navigation" -> {
-                        navController.navigate(NavigationItem.withRouteArgs(
-                            navItem = NavigationItem.DefaultArgs,
-                            arg = arguments))
+                        navController.navigate(
+                            NavigationItem.withRouteArgs(
+                                navItem = NavigationItem.DefaultArgs,
+                                arg = arguments
+                            )
+                        )
                     }
+
                     "Jet SavedState" -> {
 
                     }
+
                     "Ui" -> {}
                     "Material" -> {}
                 }
@@ -87,53 +106,73 @@ fun MainNavigation(
             enterTransition = {
                 when (initialState.destination.route) {
                     NavigationItem.Main.route ->
-                        slideIntoContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(500))
+                        slideIntoContainer(
+                            AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     NavigationItem.Main.route ->
-                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = tween(500))
+                        slideOutOfContainer(
+                            AnimatedContentScope.SlideDirection.Left,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             popEnterTransition = {
                 when (initialState.destination.route) {
                     NavigationItem.Main.route ->
-                        slideIntoContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(500))
+                        slideIntoContainer(
+                            AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             },
             popExitTransition = {
                 when (targetState.destination.route) {
                     NavigationItem.Main.route ->
-                        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right,
-                            animationSpec = tween(500))
+                        slideOutOfContainer(
+                            AnimatedContentScope.SlideDirection.Right,
+                            animationSpec = tween(500)
+                        )
+
                     else -> null
                 }
             }) { backStackEntry ->
             DefaultArgsScreen(
                 value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Default),
                 handleNavigation = {
-                    navController.navigate(NavigationItem.withNullableRouteArgs(NavigationItem.NullableArgs,
-                        arg = it))
+                    navController.navigate(
+                        NavigationItem.withNullableRouteArgs(
+                            NavigationItem.NullableArgs,
+                            arg = it
+                        )
+                    )
                 })
         }
 
-        composable(route = NavigationItem.NullableArgs.route, arguments = listOf(
-            navArgument(name = NavigationConstants.Arg_Nullable) {
-                type = NavType.StringType
-                nullable = true
-            })) { backStackEntry ->
+        composable(
+            route = NavigationItem.NullableArgs.route, arguments = listOf(
+                navArgument(name = NavigationConstants.Arg_Nullable) {
+                    type = NavType.StringType
+                    nullable = true
+                })
+        ) { backStackEntry ->
             NullableArgsScreen(
                 args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Nullable),
                 handleCustomSerializableCLick = {
-                    val route = withCustomSerializable(NavigationItem.SerializableArgs,
-                        ComposeItem("Custom serializable.", R.drawable.ic_close))
+                    val route = withCustomSerializable(
+                        NavigationItem.SerializableArgs,
+                        ComposeItem("Custom serializable.", R.drawable.ic_close)
+                    )
                     navController.navigate(route = route) {
                         popUpTo(NavigationItem.Main.route)
                     }
@@ -146,7 +185,8 @@ fun MainNavigation(
                 navArgument(name = NavigationConstants.Arg_Serializable) {
                     type = NavType.StringType
                     nullable = true
-                })) { backStackEntry ->
+                })
+        ) { backStackEntry ->
             SerializableArgsScreen(args = backStackEntry.customSerializable(NavigationConstants.Arg_Serializable)) {
                 navController.navigateUp()
             }

@@ -21,13 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.sr.compose.MainViewModel
 import com.sr.compose.R.color
-import com.sr.compose.navigation.NavigationItem
 
 @Composable
 @Preview(showBackground = true)
