@@ -1,4 +1,4 @@
-package com.sr.compose.ui.screens
+package com.sr.compose.ui.screens.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -20,12 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavController
 import com.sr.compose.R.color
 import com.sr.compose.R.drawable
-import com.sr.compose.navigation.ComposeItem
-import com.sr.compose.navigation.NavigationItem
-import com.sr.compose.withCustomSerializable
 
 
 @Composable

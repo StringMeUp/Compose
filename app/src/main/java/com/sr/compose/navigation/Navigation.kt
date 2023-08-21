@@ -15,8 +15,14 @@ import com.sr.compose.NavigationConstants
 import com.sr.compose.R
 import com.sr.compose.customSerializable
 import com.sr.compose.ui.screens.*
+import com.sr.compose.ui.screens.bottomnavscreens.BottomContacts
 import com.sr.compose.ui.screens.bottomnavscreens.BottomHome
-import com.sr.compose.ui.screens.bottomnavscreens.BottomTwo
+import com.sr.compose.ui.screens.bottomnavscreens.BottomProfile
+import com.sr.compose.ui.screens.bottomnavscreens.BottomSettings
+import com.sr.compose.ui.screens.main.DefaultArgsScreen
+import com.sr.compose.ui.screens.main.HomeScreen
+import com.sr.compose.ui.screens.main.NullableArgsScreen
+import com.sr.compose.ui.screens.main.SerializableArgsScreen
 import com.sr.compose.withCustomSerializable
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -33,27 +39,6 @@ fun AppNavigation(
     ) {
         rootArgsGraph(navController, composeItems)
         bottomNavGraph()
-    }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.bottomNavGraph() {
-    navigation(
-        startDestination = NavigationItem.BottomMain.BottomNavHome.route,
-        route = Graph.BOTTOM
-    ) {
-        composable(route = NavigationItem.BottomMain.BottomNavHome.route) {
-            BottomHome()
-        }
-        composable(route = NavigationItem.BottomMain.BottomNavProfile.route) {
-            BottomTwo()
-        }
-        composable(route = NavigationItem.BottomMain.BottomNavContacts.route) {
-            BottomTwo()
-        }
-        composable(route = NavigationItem.BottomMain.BottomNavSettings.route) {
-            BottomTwo()
-        }
     }
 }
 
@@ -186,6 +171,27 @@ fun NavGraphBuilder.rootArgsGraph(
     ) { backStackEntry ->
         SerializableArgsScreen(args = backStackEntry.customSerializable(NavigationConstants.Arg_Serializable)) {
             navController.navigateUp()
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.bottomNavGraph() {
+    navigation(
+        startDestination = NavigationItem.BottomMain.BottomNavHome.route,
+        route = Graph.BOTTOM
+    ) {
+        composable(route = NavigationItem.BottomMain.BottomNavHome.route) {
+            BottomHome()
+        }
+        composable(route = NavigationItem.BottomMain.BottomNavProfile.route) {
+            BottomProfile()
+        }
+        composable(route = NavigationItem.BottomMain.BottomNavContacts.route) {
+            BottomContacts()
+        }
+        composable(route = NavigationItem.BottomMain.BottomNavSettings.route) {
+            BottomSettings()
         }
     }
 }
