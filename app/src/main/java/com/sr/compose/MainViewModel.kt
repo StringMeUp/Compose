@@ -13,8 +13,15 @@ class MainViewModel @Inject constructor(val savedStateHandle: SavedStateHandle) 
     private var _topBarState = mutableStateOf(true)
     val topBarState get() = _topBarState
 
+    private var _bottomBarState = mutableStateOf(false)
+    val bottomBarState get() = _bottomBarState
+
     fun setTopBarState(value: Boolean) {
         _topBarState.value = value
+    }
+
+    fun setBottomBarState(value: Boolean){
+        _bottomBarState.value = value
     }
 
     private var _items = mutableStateOf(ComposeItem.generate())
