@@ -1,4 +1,4 @@
-package com.sr.compose.ui.screens
+package com.sr.compose.ui.screens.main
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
