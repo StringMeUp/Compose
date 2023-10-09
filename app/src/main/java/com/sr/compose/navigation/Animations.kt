@@ -1,34 +1,35 @@
 package com.sr.compose.navigation
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavBackStackEntry
 
 @OptIn(ExperimentalAnimationApi::class)
-fun AnimatedContentScope<NavBackStackEntry>.popExitSlideOutToRight() =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.popExitSlideOutToRight() =
     slideOutOfContainer(
-        AnimatedContentScope.SlideDirection.Right,
+        AnimatedContentTransitionScope.SlideDirection.Right,
         animationSpec = tween(500)
     )
 
 @OptIn(ExperimentalAnimationApi::class)
-fun AnimatedContentScope<NavBackStackEntry>.popEnterSlideInFromRight() =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.popEnterSlideInFromRight() =
     slideIntoContainer(
-        AnimatedContentScope.SlideDirection.Right,
+        AnimatedContentTransitionScope.SlideDirection.Right,
         animationSpec = tween(500)
     )
 
 @OptIn(ExperimentalAnimationApi::class)
-fun AnimatedContentScope<NavBackStackEntry>.enterSlideInFromLeft() =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.enterSlideInFromLeft() =
     slideIntoContainer(
-        AnimatedContentScope.SlideDirection.Left,
+        AnimatedContentTransitionScope.SlideDirection.Left,
         animationSpec = tween(500)
     )
 
 @OptIn(ExperimentalAnimationApi::class)
-fun AnimatedContentScope<NavBackStackEntry>.exitSlideOutToLeft() =
+fun AnimatedContentTransitionScope<NavBackStackEntry>.exitSlideOutToLeft() =
     slideOutOfContainer(
-        AnimatedContentScope.SlideDirection.Left,
+        AnimatedContentTransitionScope.SlideDirection.Left,
         animationSpec = tween(500)
     )
