@@ -1,38 +1,38 @@
 package com.sr.compose.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 import com.sr.compose.NavigationConstants
 import com.sr.compose.R
 import com.sr.compose.customSerializable
-import com.sr.compose.ui.screens.*
-import com.sr.compose.ui.screens.bottomnavscreens.BottomContacts
-import com.sr.compose.ui.screens.bottomnavscreens.BottomHome
-import com.sr.compose.ui.screens.bottomnavscreens.BottomProfile
-import com.sr.compose.ui.screens.bottomnavscreens.BottomSettings
+import com.sr.compose.ui.screens.bottomnavscreens.BottomHomeScreen
+import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
+import com.sr.compose.ui.screens.bottomnavscreens.ProfileScreen
+import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.main.DefaultArgsScreen
 import com.sr.compose.ui.screens.main.HomeScreen
 import com.sr.compose.ui.screens.main.NullableArgsScreen
 import com.sr.compose.ui.screens.main.SerializableArgsScreen
 import com.sr.compose.withCustomSerializable
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @Composable
 fun AppNavigation(
     navController: NavHostController,
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
 ) {
     //navHost with start destination
-    AnimatedNavHost(
+
+    NavHost(
         navController = navController,
         startDestination = NavigationItem.Main.route,
         route = Graph.ROOT
@@ -42,7 +42,6 @@ fun AppNavigation(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.rootArgsGraph(
     navController: NavController,
     composeItems: () -> List<ComposeItem> = { emptyList() },
@@ -105,30 +104,31 @@ fun NavGraphBuilder.rootArgsGraph(
                 defaultValue = "Default"
             }
         ),
-        enterTransition = {
-            when (initialState.destination.route) {
-                NavigationItem.Main.route -> enterSlideInFromLeft()
-                else -> null
-            }
-        },
-        exitTransition = {
-            when (targetState.destination.route) {
-                NavigationItem.Main.route -> exitSlideOutToLeft()
-                else -> null
-            }
-        },
-        popEnterTransition = {
-            when (initialState.destination.route) {
-                NavigationItem.Main.route -> popEnterSlideInFromRight()
-                else -> null
-            }
-        },
-        popExitTransition = {
-            when (targetState.destination.route) {
-                NavigationItem.Main.route -> popExitSlideOutToRight()
-                else -> null
-            }
-        }) { backStackEntry ->
+//        enterTransition = {
+//            when (initialState.destination.route) {
+//                NavigationItem.Main.route -> enterSlideInFromLeft()
+//                else -> null
+//            }
+//        },
+//        exitTransition = {
+//            when (targetState.destination.route) {
+//                NavigationItem.Main.route -> exitSlideOutToLeft()
+//                else -> null
+//            }
+//        },
+//        popEnterTransition = {
+//            when (initialState.destination.route) {
+//                NavigationItem.Main.route -> popEnterSlideInFromRight()
+//                else -> null
+//            }
+//        },
+//        popExitTransition = {
+//            when (targetState.destination.route) {
+//                NavigationItem.Main.route -> popExitSlideOutToRight()
+//                else -> null
+//            }
+//        }
+) { backStackEntry ->
         DefaultArgsScreen(
             value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Default),
             handleNavigation = {
@@ -175,23 +175,22 @@ fun NavGraphBuilder.rootArgsGraph(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.bottomNavGraph() {
     navigation(
         startDestination = NavigationItem.BottomMain.BottomNavHome.route,
         route = Graph.BOTTOM
     ) {
         composable(route = NavigationItem.BottomMain.BottomNavHome.route) {
-            BottomHome()
+            BottomHomeScreen()
         }
         composable(route = NavigationItem.BottomMain.BottomNavProfile.route) {
-            BottomProfile()
+            ProfileScreen()
         }
         composable(route = NavigationItem.BottomMain.BottomNavContacts.route) {
-            BottomContacts()
+            ContactsScreen()
         }
         composable(route = NavigationItem.BottomMain.BottomNavSettings.route) {
-            BottomSettings()
+            SettingsScreen()
         }
     }
 }

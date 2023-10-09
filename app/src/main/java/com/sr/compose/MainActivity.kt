@@ -1,22 +1,19 @@
 package com.sr.compose
 
-import com.sr.compose.navigation.AppNavigation
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.google.accompanist.insets.ui.Scaffold
 import androidx.compose.animation.*
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
+import com.sr.compose.navigation.AppNavigation
 import com.sr.compose.navigation.ComposeItem
-
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +35,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 @Preview
 fun MoviesApp(
@@ -49,12 +45,9 @@ fun MoviesApp(
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
 ) {
     ComposeMoviesTheme {
-        val navController = rememberAnimatedNavController()
+        val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         Scaffold(
-            topBar = {
-                TopBar(isTopBarVisible, navController)
-            },
             bottomBar = {
                 BottomBar(
                     currentRoute = navBackStackEntry?.destination?.route,
@@ -62,9 +55,9 @@ fun MoviesApp(
                     navController = navController
                 )
             }) {
-            Column {
-                AppNavigation(navController = navController, composeItems = { composeItems() })
-            }
+            AppNavigation(navController = navController, composeItems = { composeItems() })
+            TopBar(isTopBarVisible, navController)
+            /** Only way to make the detail views not jump is to exclude [TopBar] from Scaffold. */
         }
 
         val currentRoute = navBackStackEntry?.destination?.route
