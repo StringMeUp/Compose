@@ -10,7 +10,7 @@
                 \nThe level of indirection provided by the composable lambda is what allows you to separate your Navigation code from the composable itself. This works in two directions: Pass only parsed arguments into your composablePass lambdas that should be triggered by the composable to navigate, rather than the NavController itself."</string>
     <string name="default_args">You\'ve just passed default arguments.</string>
 
-    <string name="bottom_one">Home</string>
+    <string name="bottom_one">Movie</string>
     <string name="bottom_two">Profile</string>
     <string name="bottom_three">Contacts</string>
     <string name="bottom_four">Settings</string>

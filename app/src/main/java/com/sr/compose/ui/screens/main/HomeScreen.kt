@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.Lifecycle
-import com.sr.compose.clickWithDebounce
+import com.sr.compose.util.clickWithDebounce
 import com.sr.compose.navigation.ComposeItem
 
 
@@ -34,12 +34,14 @@ fun HomeScreen(
     handleOnItemClick: (item: ComposeItem) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(top = 70.dp)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 70.dp)
+    ) {
         items(composeItems()) {
             CardRow(item = it) { item ->
-                if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)){
+                if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                     handleOnItemClick(item)
                 }
             }
@@ -49,15 +51,15 @@ fun HomeScreen(
 
 @Composable
 fun CardRow(item: ComposeItem, onItemClick: (ComposeItem) -> Unit) {
-    Card(modifier = Modifier
-        .height(130.dp)
-        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
-        .fillMaxWidth()
-        .clickWithDebounce {
-            onItemClick(item)
-        },
-        shape = RoundedCornerShape(12.dp),
-        elevation = 4.dp) {
+    Card(
+        modifier = Modifier
+            .height(130.dp)
+            .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+            .fillMaxWidth()
+            .clickWithDebounce {
+                onItemClick(item)
+            }, shape = RoundedCornerShape(12.dp), elevation = 4.dp
+    ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (image, text) = createRefs()
             Image(
@@ -71,7 +73,8 @@ fun CardRow(item: ComposeItem, onItemClick: (ComposeItem) -> Unit) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                     },
-                contentScale = ContentScale.FillHeight)
+                contentScale = ContentScale.FillHeight
+            )
 
             Text(
                 text = item.text,

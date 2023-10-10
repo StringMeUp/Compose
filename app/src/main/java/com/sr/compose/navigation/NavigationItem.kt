@@ -1,7 +1,7 @@
 package com.sr.compose.navigation
 
 import android.os.Parcelable
-import com.sr.compose.NavigationConstants
+import com.sr.compose.util.NavigationConstants
 import com.sr.compose.R
 import kotlinx.parcelize.Parcelize
 
@@ -22,22 +22,20 @@ data class ComposeItem(
 }
 
 sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
-    object Main :
-        NavigationItem(
-            route = "main",
-            icon = R.drawable.ic_siding,
-            name = R.string.main_desc
-        )
+    object Main : NavigationItem(
+        route = "main",
+        icon = R.drawable.ic_siding,
+        name = R.string.main_desc
+    )
 
-    object BottomMain :
-        NavigationItem(
-            route = "bottomMain",
-            icon = R.drawable.ic_siding,
-            name = R.string.main_desc
-        ) {
+    object BottomNavigation : NavigationItem(
+        route = "bottomMain",
+        icon = R.drawable.ic_siding,
+        name = R.string.main_desc
+    ) {
 
-        object BottomNavHome : NavigationItem(
-            route = "Honme", icon = R.drawable.ic_siding,
+        object BottomNavMovie : NavigationItem(
+            route = "Home", icon = R.drawable.ic_movie,
             name = R.string.bottom_one
         )
 
@@ -56,8 +54,8 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             name = R.string.bottom_four
         )
 
-        fun bottomNavDestinations() = listOf<NavigationItem>(
-            BottomNavHome,
+        fun bottomNavDestinations() = listOf(
+            BottomNavMovie,
             BottomNavProfile,
             BottomNavSettings,
             BottomNavContacts
