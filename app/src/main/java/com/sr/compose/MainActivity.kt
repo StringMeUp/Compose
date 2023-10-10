@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val viewModel: MainViewModel = viewModel()
-            MoviesApp(
+            ComposeApp(
                 isTopBarVisible = { viewModel.topBarState.value },
                 isBottomBarVisible = { viewModel.bottomBarState.value },
                 setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) },
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @Preview
-fun MoviesApp(
+fun ComposeApp(
     isTopBarVisible: () -> Boolean = { false },
     isBottomBarVisible: () -> Boolean = { false },
     setTopBar: (isVisible: Boolean) -> Unit = {},
