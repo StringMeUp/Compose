@@ -30,6 +30,8 @@ fun BottomBar(
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
         exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
     ) {
+
+
         BottomNavigation(
             backgroundColor = colorResource(id = R.color.s_color),
             contentColor = Color.Black
@@ -54,9 +56,8 @@ fun BottomBar(
                     selected = currentRoute == item.route,
                     onClick = {
                         navController.navigate(item.route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                /** Do not stack destinations */
-                                popUpTo(route = route) {
+                            navController.graph.startDestinationRoute?.let { _ ->
+                                popUpTo(NavigationItem.BottomNavigation.BottomNavMovie.route) {
                                     saveState = true
                                 }
                             }
