@@ -1,4 +1,4 @@
-package com.sr.compose
+package com.sr.compose.ui.widgets
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.sr.compose.R
 import com.sr.compose.navigation.NavigationItem
 
 @Composable

@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @Preview(showBackground = true)
-fun BottomHomeScreen() {
+fun MovieScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-//            .padding(bottom = 70.dp),
-//        contentAlignment = Alignment.Center
+            .padding(bottom = 56.dp),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Home",

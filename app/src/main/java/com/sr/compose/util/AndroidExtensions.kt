@@ -1,4 +1,4 @@
-package com.sr.compose
+package com.sr.compose.util
 
 import android.content.SharedPreferences
 import androidx.compose.foundation.clickable

@@ -16,6 +16,8 @@ import com.sr.compose.navigation.AppNavigation
 import com.sr.compose.navigation.ComposeItem
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.ui.theme.ComposeMoviesTheme
+import com.sr.compose.ui.widgets.BottomBar
+import com.sr.compose.ui.widgets.TopBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +64,7 @@ fun MoviesApp(
 
         val currentRoute = navBackStackEntry?.destination?.route
         setTopBar(currentRoute == NavigationItem.Main.route)
-        setBottomBar(NavigationItem.BottomMain?.bottomNavDestinations()?.any { it.route == currentRoute } ?: false)
+        setBottomBar(NavigationItem.BottomNavigation?.bottomNavDestinations()?.any { it.route == currentRoute } ?: false)
     }
 }
 

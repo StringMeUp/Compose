@@ -1,4 +1,4 @@
-package com.sr.compose
+package com.sr.compose.ui.widgets
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -15,6 +15,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.sr.compose.R
 import com.sr.compose.navigation.NavigationItem
 
 @Composable
@@ -23,7 +24,7 @@ fun BottomBar(
     isVisible: Boolean = false,
     navController: NavController,
 ) {
-    val items = NavigationItem.BottomMain.bottomNavDestinations()
+    val items = NavigationItem.BottomNavigation.bottomNavDestinations()
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
