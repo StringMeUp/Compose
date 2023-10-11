@@ -37,24 +37,14 @@ import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import com.sr.compose.model.Movie
 import com.sr.compose.ui.helper.StyledText
+import com.sr.compose.ui.helper.bold
+import com.sr.compose.ui.helper.default
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
     val isVisible = rememberSaveable { mutableStateOf(false) }
-
-    val bold = SpanStyle(
-        color = Color.Black,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = FontFamily.Monospace
-    )
-    val default = SpanStyle(
-        color = Color.Gray,
-        fontFamily = FontFamily.Monospace
-    )
-
     val lifecycleOwner = LocalLifecycleOwner.current
 
     Card(
