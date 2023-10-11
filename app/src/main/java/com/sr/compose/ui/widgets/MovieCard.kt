@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,9 +47,10 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
     val bold = SpanStyle(
         color = Color.Black,
         fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Monospace
     )
-    val gray = SpanStyle(
+    val default = SpanStyle(
         color = Color.Gray,
         fontFamily = FontFamily.Monospace
     )
@@ -94,8 +96,8 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             StyledText(
                 text1 = "Title",
                 text2 = movie.title,
-                color1 = Color.Black,
-                color2 = Color.Gray,
+                bold = bold,
+                default = default,
                 modifier = Modifier
                     .padding(start = 6.dp, top = 12.dp, end = 6.dp)
                     .constrainAs(titleText) {
@@ -108,9 +110,9 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             Text(
                 buildAnnotatedString {
                     withStyle(bold) { append("Genre:") }
-                    withStyle(gray) { append("${movie.genre}\n") }
+                    withStyle(default) { append("${movie.genre}\n") }
                     withStyle(bold) { append("Director:") }
-                    withStyle(gray) { append(movie.director) }
+                    withStyle(default) {  append(movie.director) }
                 }, modifier = Modifier
                     .wrapContentHeight()
                     .constrainAs(infoText) {
@@ -140,15 +142,21 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             AnimatedVisibility(visible = isVisible.value,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(top = 8.dp, start = 4.dp, end = 4.dp, bottom = 4.dp)
                     .constrainAs(detailText) {
-                        top.linkTo(poster.bottom)
+                        top.linkTo(infoText.bottom)
                     }
             ) {
                 Text(
                     buildAnnotatedString {
                         withStyle(bold) { append("Plot:") }
-                        withStyle(gray) { append(movie.plot) }
+                        withStyle(default) { append("${movie.plot}\n\n") }
+                        withStyle(bold) { append("Actors:") }
+                        withStyle(default) { append("${movie.actors}\n\n") }
+                        withStyle(bold) { append("Year:") }
+                        withStyle(default) { append("${movie.year}\n") }
+                        withStyle(bold) { append("Rating:") }
+                        withStyle(default) { append(movie.rating) }
                     }, modifier = Modifier
                         .wrapContentHeight()
                         .padding(10.dp)

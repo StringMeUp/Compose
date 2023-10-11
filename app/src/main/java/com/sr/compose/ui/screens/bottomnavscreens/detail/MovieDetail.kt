@@ -1,8 +1,5 @@
 package com.sr.compose.ui.screens.bottomnavscreens.detail
 
-import android.graphics.Paint.Style
-import android.util.Size
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +12,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -79,10 +77,10 @@ fun MovieDetails(movie: Movie?) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(it.images) {
+                items(it.images) { resource ->
                     AsyncImage(
                         placeholder = painterResource(R.drawable.ic_movie),
-                        model = it,
+                        model = resource,
                         contentDescription = "Image of ${movie.title}",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
