@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.sr.compose.model.Movie
 import com.sr.compose.model.getMovies
 import com.sr.compose.navigation.ComposeItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,10 @@ class MainViewModel @Inject constructor(val savedStateHandle: SavedStateHandle) 
 
     private var _movies = savedStateHandle.getStateFlow(key = "Movies", initialValue = getMovies())
     val movies = _movies
+
+    fun findMovie(id: String): Movie? {
+        return _movies.value.find { it.id == id }
+    }
 
     fun setTopBarState(value: Boolean) {
         _topBarState.value = value
