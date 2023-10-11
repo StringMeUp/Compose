@@ -15,4 +15,7 @@
     <string name="bottom_three">Contacts</string>
     <string name="bottom_four">Settings</string>
 
+    <string name="main_bottom_detail">Details</string>
+    <string name="movie_detail">Details</string>
+
 </resources>

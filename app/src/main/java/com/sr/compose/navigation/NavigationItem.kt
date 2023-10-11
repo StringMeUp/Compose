@@ -54,6 +54,13 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             name = R.string.bottom_four
         )
 
+        /** Bottom Detail Screens */
+        object MovieDetail : NavigationItem(
+            route = "movieDetail/{${NavigationConstants.Arg_Movie_Detail}}",
+            icon = R.drawable.ic_movie,
+            name = R.string.movie_detail
+        )
+
         fun bottomNavDestinations() = listOf(
             BottomNavMovie,
             BottomNavProfile,

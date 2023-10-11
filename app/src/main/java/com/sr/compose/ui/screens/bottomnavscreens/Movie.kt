@@ -1,7 +1,6 @@
 package com.sr.compose.ui.screens.bottomnavscreens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -37,7 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.sr.compose.MainViewModel
 import com.sr.compose.R
 import com.sr.compose.model.Movie
@@ -47,7 +49,8 @@ import com.sr.compose.ui.theme.ComposeMoviesTheme
 
 @Composable
 fun MovieScreen(
-    viewModel: MainViewModel = viewModel(),
+    viewModel: MainViewModel = hiltViewModel(),
+    navigateToDetails: (movieId: String) -> Unit = {},
 ) {
     LazyColumn(
         modifier = Modifier
@@ -55,13 +58,14 @@ fun MovieScreen(
             .padding(bottom = 57.dp)
     ) {
         items(viewModel.movies.value) {
-            MovieCard(it)
+            MovieCard(it, navigateToDetails)
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun MovieCard(movie: Movie) {
+private fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
     val isVisible = rememberSaveable { mutableStateOf(false) }
 
     val bold = SpanStyle(
@@ -74,12 +78,19 @@ private fun MovieCard(movie: Movie) {
         fontFamily = FontFamily.Monospace
     )
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(5.dp)
-            .clip(shape = RoundedCornerShape(8.dp))
+            .clip(shape = RoundedCornerShape(8.dp)),
+        onClick = {
+            if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                navigateToDetails(movie.id)
+            }
+        }
     ) {
 
         ConstraintLayout(
