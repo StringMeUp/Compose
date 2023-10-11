@@ -1,5 +1,9 @@
 package com.sr.compose.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Movie(
     val id: String,
     val title: String,
@@ -11,7 +15,7 @@ data class Movie(
     val poster: String,
     val images: List<String>,
     val rating: String,
-)
+): Parcelable
 
 fun getMovies(): List<Movie> {
     return listOf(
