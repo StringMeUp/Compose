@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -52,15 +53,13 @@ import com.sr.compose.ui.theme.ComposeMoviesTheme
 fun MovieScreen(
     viewModel: MainViewModel = viewModel(),
 ) {
-    Surface(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 57.dp)
     ) {
-        LazyColumn() {
-            items(viewModel.movies.value) {
-                MovieCard(it)
-            }
+        items(viewModel.movies.value) {
+            MovieCard(it)
         }
     }
 }
@@ -83,12 +82,14 @@ private fun MovieCard(movie: Movie) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(8.dp)
+            .padding(5.dp)
+            .clip(shape = RoundedCornerShape(8.dp))
     ) {
         Row {
             Box(
                 modifier = Modifier
                     .size(100.dp)
+                    .padding(6.dp)
                     .clip(CircleShape)
             ) {
                 Image(
@@ -105,7 +106,9 @@ private fun MovieCard(movie: Movie) {
             ) {
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     StyledText(
@@ -133,7 +136,7 @@ private fun MovieCard(movie: Movie) {
                     withStyle(gray) { append("${movie.genre}\n") }
                     withStyle(bold) { append("Director:") }
                     withStyle(gray) { append("${movie.director}\n") }
-                })
+                }, modifier = Modifier.padding(6.dp))
 
                 AnimatedVisibility(visible = isVisible.value) {
                     Column {
