@@ -14,15 +14,14 @@ import androidx.compose.ui.unit.dp
 import com.sr.compose.R
 
 @Composable
-@Preview
 fun AppButton(
     text: String = "",
     isEnabled: Boolean = true,
     onClickEvent: () -> Unit = {},
-    modifier: Modifier = Modifier.defaultMinSize(minWidth = 140.dp, minHeight = 48.dp)
+    modifier: Modifier,
 ) {
     OutlinedButton(
-        onClick = { },
+        onClick = { onClickEvent() },
         modifier = modifier,
         enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
