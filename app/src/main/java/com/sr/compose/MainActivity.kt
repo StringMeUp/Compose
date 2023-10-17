@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -25,13 +26,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: MainViewModel = viewModel()
+            val viewModel: MainViewModel = hiltViewModel()
             ComposeApp(
                 isTopBarVisible = { viewModel.topBarState.value },
                 isBottomBarVisible = { viewModel.bottomBarState.value },
                 setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) },
                 setBottomBar = { isVisible -> viewModel.setBottomBarState(isVisible) },
-                composeItems = { viewModel.items.value })
+                composeItems = { viewModel.items.value },
+                sharedViewModel = viewModel
+            )
         }
     }
 }
@@ -45,6 +48,7 @@ fun ComposeApp(
     setTopBar: (isVisible: Boolean) -> Unit = {},
     setBottomBar: (isVisible: Boolean) -> Unit = {},
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
+    sharedViewModel: MainViewModel = hiltViewModel(),
 ) {
     ComposeMoviesTheme {
         val navController = rememberNavController()
@@ -57,14 +61,20 @@ fun ComposeApp(
                     navController = navController
                 )
             }) {
-            AppNavigation(navController = navController, composeItems = { composeItems() })
+            AppNavigation(
+                navController = navController,
+                composeItems = { composeItems() },
+                sharedVm = sharedViewModel
+            )
             TopBar(isTopBarVisible, navController)
             /** Only way to make the detail views not jump is to exclude [TopBar] from Scaffold. */
         }
 
         val currentRoute = navBackStackEntry?.destination?.route
         setTopBar(currentRoute == NavigationItem.Main.route)
-        setBottomBar(NavigationItem.BottomNavigation?.bottomNavDestinations()?.any { it.route == currentRoute } ?: false)
+        setBottomBar(
+            NavigationItem.BottomNavigation?.bottomNavDestinations()
+                ?.any { it.route == currentRoute } ?: false)
     }
 }
 

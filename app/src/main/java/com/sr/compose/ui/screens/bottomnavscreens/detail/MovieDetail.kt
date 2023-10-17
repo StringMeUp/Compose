@@ -29,23 +29,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.sr.compose.MainViewModel
 import com.sr.compose.R
-import com.sr.compose.model.Movie
+import com.sr.compose.model.MovieResponse
 import com.sr.compose.model.getMovies
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.MovieCard
 
 @Composable
-fun MovieDetailScreen(args: String = "") {
-    val viewModel: MainViewModel = hiltViewModel()
+fun MovieDetailScreen(args: String = "", viewModel: MainViewModel) {
     val movie = (viewModel::findMovie)(args)
     MovieDetails(movie)
 }
 
 @Composable
-fun MovieDetails(movie: Movie?) {
+fun MovieDetails(movie: MovieResponse.Movie?) {
     Column(modifier = Modifier.fillMaxSize()) {
         movie?.let {
-            MovieCard(movie = it)
+            MovieCard(it)
             Divider(
                 modifier = Modifier.height(24.dp), color = Color.Transparent
             )
@@ -72,23 +71,23 @@ fun MovieDetails(movie: Movie?) {
                 textAlign = TextAlign.Center
             )
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(it.images) { resource ->
-                    AsyncImage(
-                        placeholder = painterResource(R.drawable.ic_movie),
-                        model = resource,
-                        contentDescription = "Image of ${movie.title}",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(250.dp, 200.dp)
-                            .padding(12.dp)
-                            .clip(RoundedCornerShape(8.dp))
-
-                    )
-                }
-            }
+//            LazyRow(
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                items(it.images) { resource ->
+//                    AsyncImage(
+//                        placeholder = painterResource(R.drawable.ic_movie),
+//                        model = resource,
+//                        contentDescription = "Image of ${movie.title}",
+//                        contentScale = ContentScale.Crop,
+//                        modifier = Modifier
+//                            .size(250.dp, 200.dp)
+//                            .padding(12.dp)
+//                            .clip(RoundedCornerShape(8.dp))
+//
+//                    )
+//                }
+//            }
         }
     }
 }
@@ -97,6 +96,6 @@ fun MovieDetails(movie: Movie?) {
 @Composable
 fun TestUIPreview() {
     ComposeMoviesTheme {
-        MovieDetails(getMovies().first())
+        MovieDetails(null)
     }
 }

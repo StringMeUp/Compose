@@ -29,13 +29,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
-import com.sr.compose.model.Movie
+
+import com.sr.compose.model.MovieResponse
 import com.sr.compose.ui.helper.StyledText
 import com.sr.compose.ui.helper.bold
 import com.sr.compose.ui.helper.default
@@ -43,7 +45,10 @@ import com.sr.compose.ui.helper.default
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
+fun MovieCard(
+    movie: MovieResponse.Movie? = null,
+    navigateToDetails: (movieId: String) -> Unit = {},
+) {
     val isVisible = rememberSaveable { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -55,7 +60,7 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             .clip(shape = RoundedCornerShape(8.dp)),
         onClick = {
             if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                navigateToDetails(movie.id)
+                movie?.let { navigateToDetails("${it.id}") }
             }
         }
     ) {
@@ -69,7 +74,8 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             val (poster, titleText, infoText, toggle, detailText) = createRefs()
 
             AsyncImage(
-                model = movie.images.first(),
+//                model = movie.images.first(),
+                model = movie?.posterPath,
                 contentDescription = "Poster",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -85,7 +91,7 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
 
             StyledText(
                 text1 = "Title",
-                text2 = movie.title,
+                text2 = movie?.title ?: "",
                 bold = bold,
                 default = default,
                 modifier = Modifier
@@ -100,9 +106,9 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
             Text(
                 buildAnnotatedString {
                     withStyle(bold) { append("Genre:") }
-                    withStyle(default) { append("${movie.genre}\n") }
+                    withStyle(default) { append("${movie?.title}\n") }
                     withStyle(bold) { append("Director:") }
-                    withStyle(default) {  append(movie.director) }
+                    withStyle(default) { append(movie?.originalTitle) }
                 }, modifier = Modifier
                     .wrapContentHeight()
                     .constrainAs(infoText) {
@@ -140,13 +146,13 @@ fun MovieCard(movie: Movie, navigateToDetails: (movieId: String) -> Unit = {}) {
                 Text(
                     buildAnnotatedString {
                         withStyle(bold) { append("Plot:") }
-                        withStyle(default) { append("${movie.plot}\n\n") }
+                        withStyle(default) { append("${movie?.overview}\n\n") }
                         withStyle(bold) { append("Actors:") }
-                        withStyle(default) { append("${movie.actors}\n\n") }
+                        withStyle(default) { append("${movie?.originalLanguage}\n\n") }
                         withStyle(bold) { append("Year:") }
-                        withStyle(default) { append("${movie.year}\n") }
+                        withStyle(default) { append("${movie?.voteAverage}\n") }
                         withStyle(bold) { append("Rating:") }
-                        withStyle(default) { append(movie.rating) }
+                        withStyle(default) { append(movie?.releaseDate.toString()) }
                     }, modifier = Modifier
                         .wrapContentHeight()
                         .padding(10.dp)
