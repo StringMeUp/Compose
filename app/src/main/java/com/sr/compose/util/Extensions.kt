@@ -4,7 +4,7 @@ import com.sr.compose.model.GenresResponse
 
 fun <T>Resource<T>.evaluateResource(
 
-    onLoading: () -> Unit,
+    onLoading: () -> Unit = {},
     onSuccess: (data: T?) -> Unit,
     onError: () -> Unit,
 ): Unit = when (this) {
