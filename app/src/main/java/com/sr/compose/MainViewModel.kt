@@ -13,6 +13,7 @@ import com.sr.compose.util.evaluateResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,10 +27,6 @@ class MainViewModel @Inject constructor(
         val genres: Resource<GenresResponse>,
     )
 
-    init {
-        fetchMoviesAndGenres()
-    }
-
     private var _topBarState = mutableStateOf(true)
     val topBarState = _topBarState
 
@@ -39,31 +36,35 @@ class MainViewModel @Inject constructor(
     private var _items = mutableStateOf(ComposeItem.generate())
     val items = _items
 
-    private var _movies = MutableStateFlow(emptyList<MovieResponse.Movie>())
+    private var _movies = mutableStateOf(emptyList<MovieResponse.Movie>())
     val movies = _movies
 
-    private var _genres = MutableStateFlow(emptyList<GenresResponse.Genre>())
+    private var _genres = mutableStateOf(emptyList<GenresResponse.Genre>())
     val genres = _genres
 
-    private fun fetchMoviesAndGenres() {
-        viewModelScope.launch {
-            val genres = repository.getGenre()
-            repository.getPopular().zip(genres) { mov, gnr ->
-                MovieGenres(movies = mov, genres = gnr)
-            }.collectLatest {
-                it.movies.evaluateResource(
-                    onLoading = {},
-                    onSuccess = { data ->
-                        data?.movies?.let {
-                            _movies.value = it.sortedWith(compareByDescending { it.voteAverage })
-                        }
-                    }, onError = {})
+    private var _loading = mutableStateOf(true)
+    val loading = _loading
 
-                it.genres.evaluateResource(
-                    onLoading = {},
-                    onSuccess = {
-                        it?.genres?.let { _genres.value = it }
-                    }, onError = {})
+    fun fetchMoviesAndGenres() {
+        viewModelScope.launch {
+            repository.apply {
+                getPopular().zip(getGenre()) { mov, gnr ->
+                    MovieGenres(movies = mov, genres = gnr)
+                }.onCompletion { _loading.value = false }
+                    .collectLatest {
+                        it.movies.evaluateResource(
+                            onSuccess = { data ->
+                                data?.movies?.let {
+                                    _movies.value =
+                                        it.sortedWith(compareByDescending { it.voteAverage })
+                                }
+                            }, onError = {})
+
+                        it.genres.evaluateResource(
+                            onSuccess = {
+                                it?.genres?.let { _genres.value = it }
+                            }, onError = {})
+                    }
             }
         }
     }
