@@ -24,18 +24,28 @@ import com.sr.compose.MainViewModel
 import com.sr.compose.model.MovieResponse
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.MovieCard
+import com.sr.compose.util.findGenres
 
 @Composable
-fun MovieDetailScreen(args: String = "", viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity)) {
+fun MovieDetailScreen(
+    args: String = "",
+    viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+) {
     val movie = (viewModel::findMovie)(args)
     MovieDetails(movie)
 }
 
 @Composable
-fun MovieDetails(movie: MovieResponse.Movie?) {
+fun MovieDetails(
+    movie: MovieResponse.Movie?,
+    viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         movie?.let {
-            MovieCard(it)
+            MovieCard(
+                movie = it,
+                imagePath = { viewModel.getImagePath("${it.id}") },
+                genres = { viewModel.genres.value.findGenres(genreIds = it.genreIds) })
             Divider(
                 modifier = Modifier.height(24.dp), color = Color.Transparent
             )

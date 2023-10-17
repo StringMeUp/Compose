@@ -48,9 +48,12 @@ import com.sr.compose.ui.helper.default
 fun MovieCard(
     movie: MovieResponse.Movie? = null,
     navigateToDetails: (movieId: String) -> Unit = {},
+    imagePath: () -> String = { "" },
+    genres: () -> String = { "" },
 ) {
     val isVisible = rememberSaveable { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
+
 
     Card(
         modifier = Modifier
@@ -74,8 +77,7 @@ fun MovieCard(
             val (poster, titleText, infoText, toggle, detailText) = createRefs()
 
             AsyncImage(
-//                model = movie.images.first(),
-                model = movie?.posterPath,
+                model = imagePath(),
                 contentDescription = "Poster",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -106,9 +108,9 @@ fun MovieCard(
             Text(
                 buildAnnotatedString {
                     withStyle(bold) { append("Genre:") }
-                    withStyle(default) { append("${movie?.title}\n") }
-                    withStyle(bold) { append("Director:") }
-                    withStyle(default) { append(movie?.originalTitle) }
+                    withStyle(default) { append("${genres()}\n") }
+                    withStyle(bold) { append("Vote average:") }
+                    withStyle(default) { append("${movie?.voteAverage}") }
                 }, modifier = Modifier
                     .wrapContentHeight()
                     .constrainAs(infoText) {
@@ -147,12 +149,12 @@ fun MovieCard(
                     buildAnnotatedString {
                         withStyle(bold) { append("Plot:") }
                         withStyle(default) { append("${movie?.overview}\n\n") }
-                        withStyle(bold) { append("Actors:") }
+                        withStyle(bold) { append("Original language:") }
                         withStyle(default) { append("${movie?.originalLanguage}\n\n") }
-                        withStyle(bold) { append("Year:") }
-                        withStyle(default) { append("${movie?.voteAverage}\n") }
-                        withStyle(bold) { append("Rating:") }
-                        withStyle(default) { append(movie?.releaseDate.toString()) }
+                        withStyle(bold) { append("Release date:") }
+                        withStyle(default) { append("${movie?.releaseDate}\n") }
+                        withStyle(bold) { append("Popularity:") }
+                        withStyle(default) { append("${movie?.popularity}") }
                     }, modifier = Modifier
                         .wrapContentHeight()
                         .padding(10.dp)
