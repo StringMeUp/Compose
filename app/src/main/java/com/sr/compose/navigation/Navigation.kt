@@ -31,7 +31,6 @@ import com.sr.compose.util.withCustomSerializable
 fun AppNavigation(
     navController: NavHostController,
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
-    sharedVm: MainViewModel
 ) {
     //navHost with start destination
     NavHost(
@@ -40,7 +39,7 @@ fun AppNavigation(
         route = Graph.ROOT
     ) {
         rootArgsGraph(navController, composeItems)
-        bottomNavGraph(navController, sharedVm)
+        bottomNavGraph(navController)
     }
 }
 
@@ -177,7 +176,7 @@ fun NavGraphBuilder.rootArgsGraph(
     }
 }
 
-fun NavGraphBuilder.bottomNavGraph(navController: NavHostController, sharedVm: MainViewModel) {
+fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
     navigation(
         startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
         route = Graph.BOTTOM
@@ -217,7 +216,7 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController, sharedVm: M
             })
         ) {
             val arguments = it.arguments?.getString(NavigationConstants.Arg_Movie_Detail)
-            MovieDetailScreen(args = arguments!!, sharedVm)
+            MovieDetailScreen(args = arguments!!)
         }
     }
 }

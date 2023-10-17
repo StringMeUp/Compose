@@ -8,9 +8,9 @@ import androidx.compose.animation.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sr.compose.navigation.AppNavigation
@@ -26,14 +26,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: MainViewModel = hiltViewModel()
+            val viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
             ComposeApp(
                 isTopBarVisible = { viewModel.topBarState.value },
                 isBottomBarVisible = { viewModel.bottomBarState.value },
                 setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) },
                 setBottomBar = { isVisible -> viewModel.setBottomBarState(isVisible) },
-                composeItems = { viewModel.items.value },
-                sharedViewModel = viewModel
+                composeItems = { viewModel.items.value }
             )
         }
     }
@@ -48,7 +47,6 @@ fun ComposeApp(
     setTopBar: (isVisible: Boolean) -> Unit = {},
     setBottomBar: (isVisible: Boolean) -> Unit = {},
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
-    sharedViewModel: MainViewModel = hiltViewModel(),
 ) {
     ComposeMoviesTheme {
         val navController = rememberNavController()
@@ -63,8 +61,7 @@ fun ComposeApp(
             }) {
             AppNavigation(
                 navController = navController,
-                composeItems = { composeItems() },
-                sharedVm = sharedViewModel
+                composeItems = { composeItems() }
             )
             TopBar(isTopBarVisible, navController)
             /** Only way to make the detail views not jump is to exclude [TopBar] from Scaffold. */
