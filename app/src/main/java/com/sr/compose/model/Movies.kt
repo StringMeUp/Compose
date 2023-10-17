@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Movie(
+data class Movies(
     val id: String,
     val title: String,
     val year: String,
@@ -17,9 +17,9 @@ data class Movie(
     val rating: String,
 ): Parcelable
 
-fun getMovies(): List<Movie> {
+fun getMovies(): List<Movies> {
     return listOf(
-        Movie(
+        Movies(
             id = "tt0499549",
             title = "Avatar",
             year = "2009",
@@ -38,7 +38,7 @@ fun getMovies(): List<Movie> {
             rating = "7.9"
         ),
 
-        Movie(
+        Movies(
             id = "tt0416449",
             title = "300",
             year = "2006",
@@ -56,7 +56,7 @@ fun getMovies(): List<Movie> {
             rating = "7.7"
         ),
 
-        Movie(
+        Movies(
             id = "tt0848228",
             title = "The Avengers",
             year = "2012",
@@ -75,7 +75,7 @@ fun getMovies(): List<Movie> {
             rating = "8.1"
         ),
 
-        Movie(
+        Movies(
             id = "tt0993846",
             title = "The Wolf of Wall Street",
             year = "2013",
@@ -94,7 +94,7 @@ fun getMovies(): List<Movie> {
             rating = "8.2"
         ),
 
-        Movie(
+        Movies(
             id = "tt0816692",
             title = "Interstellar",
             year = "2014",
@@ -112,7 +112,7 @@ fun getMovies(): List<Movie> {
             ),
             rating = "8.6"
         ),
-        Movie(
+        Movies(
             id = "tt0944947",
             title = "Game of Thrones",
             year = "2011 - 2018",
@@ -132,7 +132,7 @@ fun getMovies(): List<Movie> {
         ),
 
 
-        Movie(
+        Movies(
             id = "tt2306299",
             title = "Vikings",
             year = "2013–2020",
@@ -151,7 +151,7 @@ fun getMovies(): List<Movie> {
             rating = "9.5"
         ),
 
-        Movie(
+        Movies(
             id = "tt0903747",
             title = "Breaking Bad",
             year = "2008–2013",
@@ -170,7 +170,7 @@ fun getMovies(): List<Movie> {
             rating = "9.5"
         ),
 
-        Movie(
+        Movies(
             id = "tt2707408",
             title = "Narcos",
             year = "2015-",

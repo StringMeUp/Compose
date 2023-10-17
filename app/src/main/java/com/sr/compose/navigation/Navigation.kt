@@ -10,12 +10,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.sr.compose.MainViewModel
 import com.sr.compose.R
 import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.MovieScreen
 import com.sr.compose.ui.screens.bottomnavscreens.ProfileScreen
 import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
+//import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
 import com.sr.compose.ui.screens.main.DefaultArgsScreen
 import com.sr.compose.ui.screens.main.HomeScreen
 import com.sr.compose.ui.screens.main.NullableArgsScreen
@@ -29,6 +31,7 @@ import com.sr.compose.util.withCustomSerializable
 fun AppNavigation(
     navController: NavHostController,
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
+    sharedVm: MainViewModel
 ) {
     //navHost with start destination
     NavHost(
@@ -37,7 +40,7 @@ fun AppNavigation(
         route = Graph.ROOT
     ) {
         rootArgsGraph(navController, composeItems)
-        bottomNavGraph(navController)
+        bottomNavGraph(navController, sharedVm)
     }
 }
 
@@ -174,7 +177,7 @@ fun NavGraphBuilder.rootArgsGraph(
     }
 }
 
-fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.bottomNavGraph(navController: NavHostController, sharedVm: MainViewModel) {
     navigation(
         startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
         route = Graph.BOTTOM
@@ -214,7 +217,7 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
             })
         ) {
             val arguments = it.arguments?.getString(NavigationConstants.Arg_Movie_Detail)
-            MovieDetailScreen(args = arguments!!)
+            MovieDetailScreen(args = arguments!!, sharedVm)
         }
     }
 }

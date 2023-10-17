@@ -10,9 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sr.compose.MainViewModel
-import com.sr.compose.model.getMovies
-import com.sr.compose.ui.widgets.MovieCard
 import com.sr.compose.ui.theme.ComposeMoviesTheme
+import com.sr.compose.ui.widgets.MovieCard
 
 @Composable
 fun MovieScreen(
@@ -34,6 +33,6 @@ fun MovieScreen(
 @Composable
 fun TestUIPreview() {
     ComposeMoviesTheme {
-        MovieCard(movie = getMovies().first())
+        MovieCard()
     }
 }

@@ -35,7 +35,7 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
     ) {
 
         object BottomNavMovie : NavigationItem(
-            route = "Home", icon = R.drawable.ic_movie,
+            route = "Movie", icon = R.drawable.ic_movie,
             name = R.string.bottom_one
         )
 
