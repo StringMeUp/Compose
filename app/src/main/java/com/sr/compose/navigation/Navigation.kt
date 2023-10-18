@@ -209,13 +209,12 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
         composable(
             route = NavigationItem.BottomNavigation.MovieDetail.route,
             arguments = listOf(navArgument(name = NavigationConstants.Arg_Movie_Detail) {
-                type = NavType.StringType
-                defaultValue = ""
+                type = NavType.IntType
                 nullable = false
 
             })
         ) {
-            val arguments = it.arguments?.getString(NavigationConstants.Arg_Movie_Detail)
+            val arguments = it.arguments?.getInt(NavigationConstants.Arg_Movie_Detail)
             MovieDetailScreen(args = arguments!!)
         }
     }

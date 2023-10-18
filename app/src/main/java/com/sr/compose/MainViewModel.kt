@@ -42,6 +42,9 @@ class MainViewModel @Inject constructor(
     private var _genres = mutableStateOf(emptyList<GenresResponse.Genre>())
     val genres = _genres
 
+    private var _error = mutableStateOf(false)
+    val error = _error
+
     private var _loading = mutableStateOf(true)
     val loading = _loading
 
@@ -69,11 +72,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun findMovie(id: String): MovieResponse.Movie? {
-        return _movies.value.find { it.id == id.toInt() }
+    fun findMovie(id: Int): MovieResponse.Movie? {
+        return _movies.value.find { it.id == id }
     }
 
-    fun getImagePath(id: String): String {
+    fun getImagePath(id: Int): String {
         return "${NetworkConstants.IMAGE_URL}${findMovie(id)?.posterPath}"
     }
 
