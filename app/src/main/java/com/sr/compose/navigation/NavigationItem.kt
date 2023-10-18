@@ -101,6 +101,10 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             return "${navItem.route.substringBefore("{")}$arg"
         }
 
+        fun withRouteArgs(navItem: NavigationItem, arg: Int): String {
+            return "${navItem.route.substringBefore("{")}$arg"
+        }
+
         fun withNullableRouteArgs(navItem: NavigationItem, arg: String? = null): String {
             return "${navItem.route.substringBefore("=")}=$arg"
         }

@@ -47,7 +47,7 @@ import com.sr.compose.ui.helper.default
 @Composable
 fun MovieCard(
     movie: MovieResponse.Movie? = null,
-    navigateToDetails: (movieId: String) -> Unit = {},
+    navigateToDetails: (movieId: Int) -> Unit = {},
     imagePath: () -> String = { "" },
     genres: () -> String = { "" },
 ) {
@@ -63,7 +63,7 @@ fun MovieCard(
             .clip(shape = RoundedCornerShape(8.dp)),
         onClick = {
             if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                movie?.let { navigateToDetails("${it.id}") }
+                movie?.let { navigateToDetails(it.id) }
             }
         }
     ) {

@@ -23,7 +23,7 @@ import com.sr.compose.util.findGenres
 @Composable
 fun MovieScreen(
     viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
-    navigateToDetails: (movieId: String) -> Unit = {},
+    navigateToDetails: (movieId: Int) -> Unit = {},
 ) {
     
     viewModel.fetchMoviesAndGenres()
@@ -42,7 +42,7 @@ fun MovieScreen(
                 MovieCard(
                     movie = it,
                     navigateToDetails = navigateToDetails,
-                    imagePath = { viewModel.getImagePath(id = "${it.id}") },
+                    imagePath = { viewModel.getImagePath(id = it.id) },
                     genres = { viewModel.genres.value.findGenres(genreIds = it.genreIds) })
             }
         }

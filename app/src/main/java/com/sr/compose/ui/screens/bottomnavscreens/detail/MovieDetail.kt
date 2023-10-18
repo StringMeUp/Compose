@@ -28,7 +28,7 @@ import com.sr.compose.util.findGenres
 
 @Composable
 fun MovieDetailScreen(
-    args: String = "",
+    args: Int = -1,
     viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val movie = (viewModel::findMovie)(args)
@@ -44,7 +44,7 @@ fun MovieDetails(
         movie?.let {
             MovieCard(
                 movie = it,
-                imagePath = { viewModel.getImagePath("${it.id}") },
+                imagePath = { viewModel.getImagePath(it.id) },
                 genres = { viewModel.genres.value.findGenres(genreIds = it.genreIds) })
             Divider(
                 modifier = Modifier.height(24.dp), color = Color.Transparent
