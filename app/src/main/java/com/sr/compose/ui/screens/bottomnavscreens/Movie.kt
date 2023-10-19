@@ -18,15 +18,18 @@ import com.sr.compose.MainViewModel
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.MovieCard
 import com.sr.compose.ui.widgets.ProgressIndicator
-import com.sr.compose.util.findGenres
+import timber.log.Timber
 
 @Composable
 fun MovieScreen(
     viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
     navigateToDetails: (movieId: Int) -> Unit = {},
 ) {
-    
-    viewModel.fetchMoviesAndGenres()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMoviesAndGenres()
+        Timber.tag("Recompose").d("trigger")
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -38,15 +41,16 @@ fun MovieScreen(
                 .padding(bottom = 57.dp)
         ) {
 
-            items(viewModel.movies.value) {
+            items(viewModel.movies.value) { movie ->
                 MovieCard(
-                    movie = it,
-                    navigateToDetails = navigateToDetails,
-                    imagePath = { viewModel.getImagePath(id = it.id) },
-                    genres = { viewModel.genres.value.findGenres(genreIds = it.genreIds) })
+                    movie = movie,
+                    navigateToDetails = { navigateToDetails(movie.id) },
+                    imagePath = { viewModel.getImagePath(movie.id) },
+                    genres = { viewModel.getMovieGenres(movie.genreIds) },
+                    toggle = { viewModel.toggle(movie.id) }
+                )
             }
         }
-
         if (viewModel.loading.value) ProgressIndicator()
     }
 }

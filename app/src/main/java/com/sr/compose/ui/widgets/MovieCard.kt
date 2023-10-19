@@ -50,10 +50,9 @@ fun MovieCard(
     navigateToDetails: (movieId: Int) -> Unit = {},
     imagePath: () -> String = { "" },
     genres: () -> String = { "" },
+    toggle: () -> Unit = {},
 ) {
-    val isVisible = rememberSaveable { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
-
 
     Card(
         modifier = Modifier
@@ -67,7 +66,6 @@ fun MovieCard(
             }
         }
     ) {
-
         ConstraintLayout(
             modifier = Modifier
                 .padding(4.dp)
@@ -123,13 +121,13 @@ fun MovieCard(
             )
 
             Icon(
-                imageVector = if (isVisible.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                imageVector = if (movie?.isVisible == true) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                 contentDescription = "Down Arrow",
                 modifier = Modifier
                     .padding(end = 4.dp)
                     .size(25.dp)
                     .clickable {
-                        isVisible.value = !isVisible.value
+                        toggle()
                     }
                     .constrainAs(toggle) {
                         end.linkTo(parent.end)
@@ -137,7 +135,7 @@ fun MovieCard(
                 tint = Color.DarkGray
             )
 
-            AnimatedVisibility(visible = isVisible.value,
+            AnimatedVisibility(visible = movie?.isVisible ?: false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp, start = 4.dp, end = 4.dp, bottom = 4.dp)
