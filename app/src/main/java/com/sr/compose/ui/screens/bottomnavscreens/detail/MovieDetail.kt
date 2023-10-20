@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,21 +23,19 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.sr.compose.MainViewModel
 import com.sr.compose.R
 import com.sr.compose.model.ImagesResponse
+import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
 import com.sr.compose.ui.widgets.MovieCard
 
 @Composable
 @Preview
 fun MovieDetailScreen(
     args: Int = -1,
-    viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
+    viewModel: MovieViewModel = hiltViewModel(LocalContext.current as ComponentActivity),
 ) {
     val movie = checkNotNull((viewModel::findMovie)(args))
-    val state = viewModel.userCurrentState.collectAsStateWithLifecycle(
-        initialValue = MainViewModel.UIState(emptyList())
-    )
+    val state = viewModel.movieState.collectAsStateWithLifecycle()
 
     viewModel.getImages(movieId = movie.id)
 
@@ -69,7 +66,7 @@ private fun ImagesRow(
             AsyncImage(
                 placeholder = painterResource(R.drawable.ic_movie),
                 model = path(image.filePath),
-                contentDescription = "Image of ",
+                contentDescription = "Movie image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(250.dp, 200.dp)
