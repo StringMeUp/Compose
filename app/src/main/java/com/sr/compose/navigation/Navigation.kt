@@ -1,7 +1,6 @@
 package com.sr.compose.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -11,10 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.sr.compose.MainViewModel
 import com.sr.compose.R
 import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
-import com.sr.compose.ui.screens.bottomnavscreens.MovieScreen
+import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
 import com.sr.compose.ui.screens.bottomnavscreens.ProfileScreen
 import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
@@ -196,7 +194,13 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 oldValue = NavigationConstants.Arg_Movie_Detail,
                 newValue = movieId
                 ))*/
-            })
+
+                /**  Using replace  navController.navigate(
+                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
+                oldValue = NavigationConstants.Arg_Movie_Detail,
+                newValue = movieId
+                ))*/
+            }, onNavigateUp = { navController.navigateUp() })
         }
         composable(route = NavigationItem.BottomNavigation.BottomNavProfile.route) {
             ProfileScreen()
