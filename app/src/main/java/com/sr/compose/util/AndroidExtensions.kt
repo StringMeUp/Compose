@@ -2,8 +2,12 @@ package com.sr.compose.util
 
 import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.sr.compose.navigation.NavigationItem
 
@@ -48,4 +52,13 @@ inline fun Modifier.clickWithDebounce(
         lastClickTime = currentTime
         onClick()
     }
+}
+
+@Composable
+inline fun <reified VM : ViewModel> NavBackStackEntry.parentViewModel(
+    navController: NavController,
+    route: String,
+): VM {
+    val parentBackStackEntry = navController.getBackStackEntry(route)
+    return hiltViewModel(parentBackStackEntry)
 }

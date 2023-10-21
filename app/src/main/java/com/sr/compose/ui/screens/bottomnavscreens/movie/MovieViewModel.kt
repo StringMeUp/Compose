@@ -1,13 +1,10 @@
 package com.sr.compose.ui.screens.bottomnavscreens.movie
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sr.compose.model.GenresResponse
-import com.sr.compose.model.ImagesResponse
+import com.sr.compose.api.NetworkConstants
 import com.sr.compose.model.MovieResponse
-import com.sr.compose.network.NetworkConstants
-import com.sr.compose.repository.usecase.MoviesUseCase
+import com.sr.compose.usecase.MoviesUseCase
 import com.sr.compose.util.findGenres
 import com.sr.compose.util.toggleVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,25 +18,16 @@ import javax.inject.Inject
 class MovieViewModel @Inject constructor(
     private val useCase: MoviesUseCase,
 ) : ViewModel() {
-
-    data class MovieState(
-        val isLoading: Boolean = true,
-        val isError: Boolean = false,
-        val movies: List<MovieResponse.Movie> = emptyList(),
-        val genres: List<GenresResponse.Genre> = emptyList(),
-        val images: List<ImagesResponse.MovieImage> = emptyList(),
-    )
-
     private val _movieState: MutableStateFlow<MovieState> = MutableStateFlow(MovieState())
     val movieState: StateFlow<MovieState> = _movieState
 
     fun getMoviesAndGenres() {
         if (movieState.value.movies.isEmpty())
-        viewModelScope.launch {
-            _movieState.update {
-                useCase.getMoviesAndGenres()
+            viewModelScope.launch {
+                _movieState.update {
+                    useCase.getMoviesAndGenres()
+                }
             }
-        }
     }
 
     fun getImages(movieId: Int) {
@@ -62,16 +50,13 @@ class MovieViewModel @Inject constructor(
         return "${NetworkConstants.IMAGE_URL}${path}"
     }
 
-    fun getMovieGenres(genreIds: List<Int>) =
-        _movieState.value.genres.findGenres(genreIds = genreIds)
+    fun getMovieGenres(genreIds: List<Int>): String {
+        return _movieState.value.genres.findGenres(genreIds = genreIds)
+    }
 
     fun toggle(id: Int) {
         _movieState.update {
             it.copy(movies = it.movies.toggleVisibility { (this::findMovie)(id) })
         }
-    }
-
-    fun clear(){
-        _movieState.update { MovieState() }
     }
 }

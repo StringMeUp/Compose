@@ -1,8 +1,8 @@
 package com.sr.compose.util
 
 import com.sr.compose.BuildConfig
-import com.sr.compose.network.NetworkConstants
-import com.sr.compose.network.NetworkConstants.HTTP_HEADER_X_REQUIRES_AUTHORIZATION
+import com.sr.compose.api.NetworkConstants
+import com.sr.compose.api.NetworkConstants.HTTP_HEADER_X_REQUIRES_AUTHORIZATION
 import okhttp3.Interceptor
 
 class OAuthInterceptor : Interceptor {

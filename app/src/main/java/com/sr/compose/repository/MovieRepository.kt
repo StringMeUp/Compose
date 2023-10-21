@@ -1,6 +1,6 @@
 package com.sr.compose.repository
 
-import com.sr.compose.network.MovieApi
+import com.sr.compose.api.MovieApi
 import com.sr.compose.util.RemoteSource
 import javax.inject.Inject
 

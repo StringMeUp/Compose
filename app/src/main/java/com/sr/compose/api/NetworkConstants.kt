@@ -1,4 +1,4 @@
-package com.sr.compose.network
+package com.sr.compose.api
 
 object NetworkConstants {
     const val BASE_URL = "https://api.themoviedb.org"
