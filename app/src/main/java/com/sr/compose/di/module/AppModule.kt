@@ -2,8 +2,8 @@ package com.sr.compose.di.module
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.sr.compose.network.MovieApi
-import com.sr.compose.network.NetworkConstants
+import com.sr.compose.api.MovieApi
+import com.sr.compose.api.NetworkConstants
 import com.sr.compose.util.LocalDateConverter
 import com.sr.compose.util.OAuthInterceptor
 import dagger.Module

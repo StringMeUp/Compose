@@ -1,6 +1,4 @@
-package com.sr.compose.repository.usecase
-
-import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
+package com.sr.compose.usecase
 
 abstract class BaseUseCase<in T, out Result> {
     abstract suspend fun getMoviesAndGenres(): Result

@@ -1,8 +1,7 @@
-package com.sr.compose.repository.usecase
+package com.sr.compose.usecase
 
 import com.sr.compose.repository.MovieRepository
-import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
-import com.sr.compose.util.Resource
+import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieState
 import com.sr.compose.util.evaluateResource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
@@ -10,10 +9,10 @@ import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 class MoviesUseCase @Inject constructor(private val repository: MovieRepository) :
-    BaseUseCase<Unit, MovieViewModel.MovieState>() {
-    private var movieUiState = MovieViewModel.MovieState()
+    BaseUseCase<Unit, MovieState>() {
+    private var movieUiState = MovieState()
 
-    override suspend fun getMoviesAndGenres(): MovieViewModel.MovieState {
+    override suspend fun getMoviesAndGenres(): MovieState {
         repository.apply {
             getPopular().zip(getGenre()) { mov, gnr ->
                 Pair(mov, gnr)
@@ -36,7 +35,7 @@ class MoviesUseCase @Inject constructor(private val repository: MovieRepository)
         return movieUiState
     }
 
-    override suspend fun getImages(id: Int): MovieViewModel.MovieState {
+    override suspend fun getImages(id: Int): MovieState {
         repository.getImages(id).collectLatest() {
             it.evaluateResource(
                 onSuccess = { response ->

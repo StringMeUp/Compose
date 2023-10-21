@@ -1,5 +1,6 @@
 package com.sr.compose.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -12,17 +13,18 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.sr.compose.R
 import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
-import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
 import com.sr.compose.ui.screens.bottomnavscreens.ProfileScreen
 import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
-//import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
+import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
+import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
 import com.sr.compose.ui.screens.main.DefaultArgsScreen
 import com.sr.compose.ui.screens.main.HomeScreen
 import com.sr.compose.ui.screens.main.NullableArgsScreen
 import com.sr.compose.ui.screens.main.SerializableArgsScreen
 import com.sr.compose.util.NavigationConstants
 import com.sr.compose.util.customSerializable
+import com.sr.compose.util.parentViewModel
 import com.sr.compose.util.withCustomSerializable
 
 
@@ -175,6 +177,7 @@ fun NavGraphBuilder.rootArgsGraph(
     }
 }
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
     navigation(
         startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
@@ -200,7 +203,7 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 oldValue = NavigationConstants.Arg_Movie_Detail,
                 newValue = movieId
                 ))*/
-            }, onNavigateUp = { navController.navigateUp() })
+            })
         }
         composable(route = NavigationItem.BottomNavigation.BottomNavProfile.route) {
             ProfileScreen()
@@ -220,7 +223,11 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
             })
         ) {
             val arguments = it.arguments?.getInt(NavigationConstants.Arg_Movie_Detail)
-            MovieDetailScreen(args = arguments!!)
+            val viewModel: MovieViewModel = it.parentViewModel(
+                navController = navController,
+                route = NavigationItem.BottomNavigation.BottomNavMovie.route
+            )
+            MovieDetailScreen(args = arguments!!, viewModel = viewModel)
         }
     }
 }

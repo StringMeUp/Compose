@@ -72,7 +72,7 @@ fun MovieCard(
                 .fillMaxWidth()
                 .wrapContentHeight(),
         ) {
-            val (poster, titleText, infoText, toggle, detailText) = createRefs()
+            val (poster, titleText, infoText, toggleArrow, detailText) = createRefs()
 
             AsyncImage(
                 model = imagePath(),
@@ -98,7 +98,7 @@ fun MovieCard(
                     .padding(start = 6.dp, top = 12.dp, end = 6.dp)
                     .constrainAs(titleText) {
                         start.linkTo(poster.end)
-                        end.linkTo(toggle.start)
+                        end.linkTo(toggleArrow.start)
                         width = Dimension.fillToConstraints
                     }
             )
@@ -129,7 +129,7 @@ fun MovieCard(
                     .clickable {
                         toggle()
                     }
-                    .constrainAs(toggle) {
+                    .constrainAs(toggleArrow) {
                         end.linkTo(parent.end)
                     },
                 tint = Color.DarkGray
