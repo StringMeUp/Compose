@@ -1,7 +1,6 @@
-package com.sr.compose.navigation
+package com.sr.compose.util
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavBackStackEntry
 

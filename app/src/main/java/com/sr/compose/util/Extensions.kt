@@ -3,6 +3,7 @@ package com.sr.compose.util
 import com.sr.compose.model.GenresResponse
 import com.sr.compose.model.MovieResponse
 
+/** Resource */
 fun <T> Resource<T>.evaluateResource(
     onLoading: () -> Unit = {},
     onSuccess: (data: T?) -> Unit,
@@ -21,6 +22,7 @@ fun <T> Resource<T>.evaluateResource(
     }
 }
 
+/** List:: Movies */
 fun List<GenresResponse.Genre>.findGenres(genreIds: List<Int>): String {
     val filtered = this.filter { genre -> genreIds.any { genre.id == it } }.map { it.name }
     return filtered.joinToString()
