@@ -23,7 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.MovieCard
 import com.sr.compose.ui.widgets.ProgressIndicator
-import com.sr.compose.util.helper.bold
+import com.sr.compose.ui.widgets.bold
 import timber.log.Timber
 
 @Composable

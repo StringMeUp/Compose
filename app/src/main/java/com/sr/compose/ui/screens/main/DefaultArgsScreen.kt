@@ -28,8 +28,8 @@ import coil.request.ImageRequest
 import com.sr.compose.R
 import com.sr.compose.R.color
 import com.sr.compose.util.endIndex
-import com.sr.compose.util.helper.bold
-import com.sr.compose.util.helper.default
+import com.sr.compose.ui.widgets.bold
+import com.sr.compose.ui.widgets.default
 import com.sr.compose.util.startIndex
 
 @Composable

@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.sr.compose.api.MovieApi
 import com.sr.compose.api.NetworkConstants
 import com.sr.compose.util.LocalDateConverter
-import com.sr.compose.util.OAuthInterceptor
+import com.sr.compose.api.OAuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

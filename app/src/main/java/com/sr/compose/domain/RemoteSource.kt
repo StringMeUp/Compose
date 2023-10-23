@@ -1,4 +1,4 @@
-package com.sr.compose.util
+package com.sr.compose.domain
 
 import com.sr.compose.R
 import kotlinx.coroutines.Dispatchers

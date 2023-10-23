@@ -1,6 +1,5 @@
 package com.sr.compose.navigation
 
-import android.annotation.SuppressLint
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -13,11 +12,9 @@ import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
-import com.sr.compose.util.NavigationConstants
 import com.sr.compose.util.parentViewModel
 
 
-@SuppressLint("UnrememberedGetBackStackEntry")
 fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
     navigation(
         startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
@@ -38,23 +35,6 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
                 newValue = movieId
                 ))*/
 
-                /**  Using replace  navController.navigate(
-                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
-                oldValue = NavigationConstants.Arg_Movie_Detail,
-                newValue = movieId
-                ))*/
-
-                /**  Using replace  navController.navigate(
-                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
-                oldValue = NavigationConstants.Arg_Movie_Detail,
-                newValue = movieId
-                ))*/
-
-                /**  Using replace  navController.navigate(
-                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
-                oldValue = NavigationConstants.Arg_Movie_Detail,
-                newValue = movieId
-                ))*/
             })
         }
         composable(route = NavigationItem.BottomNavigation.BottomNavProfile.route) {

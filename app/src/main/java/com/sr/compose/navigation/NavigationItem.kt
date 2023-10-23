@@ -1,7 +1,6 @@
 package com.sr.compose.navigation
 
 import com.sr.compose.R
-import com.sr.compose.util.NavigationConstants
 
 
 sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {

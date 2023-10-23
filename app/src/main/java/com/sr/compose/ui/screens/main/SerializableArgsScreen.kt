@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sr.compose.R
 import com.sr.compose.navigation.ComposeItem
-import com.sr.compose.util.helper.bold
-import com.sr.compose.util.helper.default
+import com.sr.compose.ui.widgets.bold
+import com.sr.compose.ui.widgets.default
 
 @Composable
 fun SerializableArgsScreen(args: ComposeItem?, onClick: () -> Unit = {}) {

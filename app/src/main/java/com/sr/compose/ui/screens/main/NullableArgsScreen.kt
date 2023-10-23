@@ -10,7 +10,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,8 +27,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.sr.compose.R
 import com.sr.compose.R.color
 import com.sr.compose.R.drawable
-import com.sr.compose.util.helper.bold
-import com.sr.compose.util.helper.default
+import com.sr.compose.ui.widgets.bold
+import com.sr.compose.ui.widgets.default
 
 
 @Composable

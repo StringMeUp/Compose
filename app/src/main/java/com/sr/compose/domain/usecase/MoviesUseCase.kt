@@ -1,6 +1,6 @@
-package com.sr.compose.usecase
+package com.sr.compose.domain.usecase
 
-import com.sr.compose.repository.MovieRepository
+import com.sr.compose.domain.repository.MovieRepository
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieState
 import com.sr.compose.util.evaluateResource
 import kotlinx.coroutines.flow.collectLatest

@@ -1,4 +1,4 @@
-package com.sr.compose.util
+package com.sr.compose.api
 
 import com.sr.compose.BuildConfig
 import com.sr.compose.api.NetworkConstants

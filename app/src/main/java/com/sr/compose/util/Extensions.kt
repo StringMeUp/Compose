@@ -1,5 +1,6 @@
 package com.sr.compose.util
 
+import com.sr.compose.domain.Resource
 import com.sr.compose.model.GenresResponse
 import com.sr.compose.model.MovieResponse
 
