@@ -1,4 +1,4 @@
-package com.sr.compose.util
+package com.sr.compose.domain
 
 sealed class Resource<out T> {
     object Loading : Resource<Nothing>()

@@ -5,22 +5,16 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,11 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sr.compose.R
-import com.sr.compose.util.helper.default
+import com.sr.compose.ui.widgets.default
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.AppTextField
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @Composable
 fun ProfileScreen() {
@@ -91,22 +84,22 @@ fun LogIn() {
         AppButton(text = "Log in",
             modifier = Modifier
                 .padding(top = 24.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 48.dp)
+                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(loginButton) {
                     top.linkTo(passwordTextField.bottom)
                     start.linkTo(passwordTextField.start)
                     end.linkTo(passwordTextField.end)
                 })
 
-        AppButton(text = "Register",
+        AppButton(text = "Continue as guest",
             modifier = Modifier
-                .padding(top = 12.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 48.dp)
+                .padding(top = 4.dp)
+                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(registerButton) {
                     top.linkTo(loginButton.bottom)
                     centerHorizontallyTo(parent)
                 },
-            onClickEvent = {
+            onCLick = {
                 scope.launch {
                     sheetState.show()
                 }
@@ -116,7 +109,6 @@ fun LogIn() {
             ModalBottomSheet(
                 onDismissRequest = {
                     scope.launch { sheetState.hide() }
-
                 }, sheetState = SheetState(true)
             ) {
                 Surface(

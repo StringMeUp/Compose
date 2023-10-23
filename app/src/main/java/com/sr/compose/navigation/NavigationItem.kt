@@ -1,25 +1,7 @@
 package com.sr.compose.navigation
 
-import android.os.Parcelable
-import com.sr.compose.util.NavigationConstants
 import com.sr.compose.R
-import kotlinx.parcelize.Parcelize
 
-
-@Parcelize
-data class ComposeItem(
-    val text: String,
-    val image: Int,
-) : Parcelable {
-    companion object {
-        fun generate() = listOf(
-            ComposeItem("Arguments", R.drawable.logo),
-            ComposeItem("Bottom Navigation", R.drawable.jet),
-            ComposeItem("Ui", R.drawable.ui),
-            ComposeItem("Material", R.drawable.material)
-        )
-    }
-}
 
 sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
     object Main : NavigationItem(

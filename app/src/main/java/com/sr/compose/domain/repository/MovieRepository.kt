@@ -1,7 +1,7 @@
-package com.sr.compose.repository
+package com.sr.compose.domain.repository
 
 import com.sr.compose.api.MovieApi
-import com.sr.compose.util.RemoteSource
+import com.sr.compose.domain.RemoteSource
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(private val api: MovieApi) {

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sr.compose.api.NetworkConstants
 import com.sr.compose.model.MovieResponse
-import com.sr.compose.usecase.MoviesUseCase
+import com.sr.compose.domain.usecase.MoviesUseCase
 import com.sr.compose.util.findGenres
 import com.sr.compose.util.toggleVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel

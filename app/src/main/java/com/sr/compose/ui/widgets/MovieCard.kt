@@ -30,9 +30,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import com.sr.compose.model.MovieResponse
-import com.sr.compose.util.helper.StyledText
-import com.sr.compose.util.helper.bold
-import com.sr.compose.util.helper.default
 
 
 @OptIn(ExperimentalMaterialApi::class)

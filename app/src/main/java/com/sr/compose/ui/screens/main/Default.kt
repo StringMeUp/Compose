@@ -28,8 +28,8 @@ import coil.request.ImageRequest
 import com.sr.compose.R
 import com.sr.compose.R.color
 import com.sr.compose.util.endIndex
-import com.sr.compose.util.helper.bold
-import com.sr.compose.util.helper.default
+import com.sr.compose.ui.widgets.bold
+import com.sr.compose.ui.widgets.default
 import com.sr.compose.util.startIndex
 
 @Composable
@@ -112,16 +112,19 @@ fun DefaultArgsScreen(
                 .constrainAs(button) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-
+                    top.linkTo(descr.bottom)
                 }
-                .padding(24.dp),
+                .padding(top = 64.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
                 onClick("Hooray this was a success. You just received nullable args.")
 //                handleNavigation(null)
             }) {
-            Text(text = "Try nullable arguments?", color = Color.White)
+            Text(
+                text = "Try nullable arguments?",
+                color = Color.White,
+                modifier = Modifier.padding(4.dp)
+            )
         }
     }
 }

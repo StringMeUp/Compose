@@ -4,8 +4,6 @@ import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
@@ -28,8 +26,7 @@ inline fun <reified T> SharedPreferences.putSerializable(key: String, value: T) 
     edit().putString(key, jsonString).commit()
 }
 
-
-/** Navigation */
+/** Arguments */
 inline fun <reified T> NavBackStackEntry.customSerializable(key: String): T? {
     val gson: Gson = Gson()
     return arguments?.getString(key, null)?.let {
@@ -59,7 +56,7 @@ inline fun Modifier.clickWithDebounce(
 
 /** ViewModel */
 @Composable
-inline fun <reified VM : ViewModel> NavBackStackEntry.parentViewModel(
+inline fun <reified VM : ViewModel> parentViewModel(
     navController: NavController,
     route: String,
 ): VM {
@@ -68,10 +65,10 @@ inline fun <reified VM : ViewModel> NavBackStackEntry.parentViewModel(
 }
 
 /** String*/
-fun String.startIndex(string: String): Int{
+fun String.startIndex(string: String): Int {
     return this.indexOf(string = string)
 }
 
-fun String.endIndex(string: String): Int{
+fun String.endIndex(string: String): Int {
     return this.indexOf(string = string).plus(string.length)
 }

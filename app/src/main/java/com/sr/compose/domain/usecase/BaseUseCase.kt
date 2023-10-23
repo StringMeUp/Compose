@@ -1,4 +1,4 @@
-package com.sr.compose.usecase
+package com.sr.compose.domain.usecase
 
 abstract class BaseUseCase<in T, out Result> {
     abstract suspend fun getMoviesAndGenres(): Result

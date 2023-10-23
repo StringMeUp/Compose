@@ -1,4 +1,4 @@
-package com.sr.compose.util
+package com.sr.compose.navigation
 
 object NavigationConstants {
     const val Arg_Default = "arg_default_value"
