@@ -10,46 +10,39 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
         name = R.string.main_desc
     )
 
-    object BottomNavigation : NavigationItem(
-        route = "bottomMain",
-        icon = R.drawable.ic_siding,
-        name = R.string.main_desc
-    ) {
-
-        object BottomNavMovie : NavigationItem(
+        object BottomNavMain : NavigationItem(
             route = "Movie", icon = R.drawable.ic_movie,
             name = R.string.bottom_one
-        )
+        ){
+            object BottomNavProfile : NavigationItem(
+                route = "Profile?rt={rt_arg}", icon = R.drawable.ic_account,
+                name = R.string.bottom_two
+            )
 
-        object BottomNavProfile : NavigationItem(
-            route = "Profile", icon = R.drawable.ic_account,
-            name = R.string.bottom_two
-        )
+            object BottomNavSettings : NavigationItem(
+                route = "Settings", icon = R.drawable.ic_settings,
+                name = R.string.bottom_three
+            )
 
-        object BottomNavSettings : NavigationItem(
-            route = "Settings", icon = R.drawable.ic_settings,
-            name = R.string.bottom_three
-        )
+            object BottomNavContacts : NavigationItem(
+                route = "Contact", icon = R.drawable.ic_contacts,
+                name = R.string.bottom_four
+            )
 
-        object BottomNavContacts : NavigationItem(
-            route = "Contacts", icon = R.drawable.ic_contacts,
-            name = R.string.bottom_four
-        )
+            /** Bottom Detail Screens */
+            object MovieDetail : NavigationItem(
+                route = "movieDetail/{${NavigationConstants.Arg_Movie_Detail}}",
+                icon = R.drawable.ic_movie,
+                name = R.string.movie_detail
+            )
 
-        /** Bottom Detail Screens */
-        object MovieDetail : NavigationItem(
-            route = "movieDetail/{${NavigationConstants.Arg_Movie_Detail}}",
-            icon = R.drawable.ic_movie,
-            name = R.string.movie_detail
-        )
-
-        fun bottomNavDestinations() = listOf(
-            BottomNavMovie,
-            BottomNavProfile,
-            BottomNavSettings,
-            BottomNavContacts
-        )
-    }
+            fun bottomNavDestinations() = listOf(
+                BottomNavMain,
+                BottomNavProfile,
+                BottomNavSettings,
+                BottomNavContacts
+            )
+        }
 
     object DefaultArgs :
     /** Navigate with a default parameter */

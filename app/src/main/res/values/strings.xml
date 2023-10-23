@@ -11,8 +11,8 @@
     <!-- Navigation -->
     <string name="bottom_one">Movie</string>
     <string name="bottom_two">Profile</string>
-    <string name="bottom_three">Contacts</string>
-    <string name="bottom_four">Settings</string>
+    <string name="bottom_three">Settings</string>
+    <string name="bottom_four">Contact</string>
     <string name="main_bottom_detail">Details</string>
     <string name="movie_detail">Details</string>
 

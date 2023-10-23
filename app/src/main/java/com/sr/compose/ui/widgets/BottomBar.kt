@@ -15,29 +15,38 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.sr.compose.R
+import com.sr.compose.navigation.Graph
 import com.sr.compose.navigation.NavigationItem
+import com.sr.compose.util.navigateBottomNavigationScreen
+import timber.log.Timber
 
 @Composable
 fun BottomBar(
     currentRoute: String? = "",
     isVisible: Boolean = false,
-    navController: NavController,
+    navController: NavHostController,
 ) {
-    val items = NavigationItem.BottomNavigation.bottomNavDestinations()
+    val items = NavigationItem.BottomNavMain.bottomNavDestinations()
+
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
         exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
     ) {
 
-
         BottomNavigation(
             backgroundColor = colorResource(id = R.color.s_color),
             contentColor = Color.Black
         ) {
+
             items.forEach { item ->
                 BottomNavigationItem(
+                    onClick = {
+                        navController.navigateBottomNavigationScreen(item)
+                    },
                     icon = {
                         Icon(
                             painterResource(id = item.icon),
@@ -53,18 +62,7 @@ fun BottomBar(
                     selectedContentColor = Color.White,
                     unselectedContentColor = Color.LightGray.copy(0.4f),
                     alwaysShowLabel = true,
-                    selected = currentRoute == item.route,
-                    onClick = {
-                        navController.navigate(item.route) {
-                            navController.graph.startDestinationRoute?.let { _ ->
-                                popUpTo(NavigationItem.BottomNavigation.BottomNavMovie.route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
+                    selected = currentRoute == item.route
                 )
             }
         }

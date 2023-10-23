@@ -67,8 +67,10 @@ fun NavGraphBuilder.rootGraph(
                         navController.navigate(Graph.BOTTOM)
                     }
 
-                    ComposeItemType.UI -> {}
-                    ComposeItemType.MATERIAL -> {}
+                    ComposeItemType.DRAWER -> {
+
+                    }
+                    ComposeItemType.SHEET -> {}
                     else -> {}
                 }
             }

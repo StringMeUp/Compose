@@ -27,6 +27,5 @@ interface MovieApi {
     @GET("/3/authentication/token/new")
     suspend fun requestToken(): Response<RequestTokenResponse>
 
-
 }
 

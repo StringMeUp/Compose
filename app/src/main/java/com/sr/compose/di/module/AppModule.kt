@@ -7,8 +7,8 @@ import com.google.gson.GsonBuilder
 import com.sr.compose.BuildConfig
 import com.sr.compose.api.MovieApi
 import com.sr.compose.api.NetworkConstants
-import com.sr.compose.util.LocalDateConverter
 import com.sr.compose.api.OAuthInterceptor
+import com.sr.compose.util.LocalDateConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -71,6 +71,5 @@ object AppModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(MovieApi::class.java)
-
     }
 }

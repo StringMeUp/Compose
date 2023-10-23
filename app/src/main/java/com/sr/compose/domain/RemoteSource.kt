@@ -1,6 +1,7 @@
 package com.sr.compose.domain
 
 import com.sr.compose.R
+import com.sr.compose.api.NetworkConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
@@ -10,13 +11,41 @@ import java.net.HttpURLConnection
 const val COMPOSE_TAG = "COMPOSE_LOGGER"
 
 object RemoteSource {
-    fun <T> launchResultFlow(apiResponse: suspend () -> Response<T>): Flow<Resource<T>> =
+    fun <T> launchResultFlow(
+        apiResponse: suspend () -> Response<T>,
+    ): Flow<Resource<T>> =
         flow {
             emit(Resource.Loading)
             val response = apiResponse.invoke()
             response.let {
                 if (response.isSuccessful) {
-                    emit(Resource.Success(it.body()!!))
+                    emit(Resource.Success(data = it.body()!!))
+                } else {
+                    response.errorBody()
+                    emit(Resource.Error(response.code()))
+                    Timber.d("$COMPOSE_TAG Http request failed errorBody -> ${response.errorBody()}")
+                }
+            }
+        }.catch { httpErr ->
+            emit(Resource.Error(R.string.general_api_error))
+            Timber.d("$COMPOSE_TAG Http request failed error -> $httpErr")
+        }.flowOn(Dispatchers.IO)
+
+    fun <T> launchResultFlow(
+        isAuth: Boolean = false,
+        apiResponse: suspend () -> Response<T>,
+    ): Flow<Resource<T>> =
+        flow {
+            emit(Resource.Loading)
+            val response = apiResponse.invoke()
+            response.let {
+                if (response.isSuccessful) {
+                    emit(
+                        Resource.Success(
+                            data = it.body()!!,
+                            authUrl = { if (isAuth) it.headers()[NetworkConstants.AUTH_URL] else null }
+                        )
+                    )
                 } else {
                     emit(Resource.Error(response.code()))
                     Timber.d("$COMPOSE_TAG Http request failed errorBody -> ${response.errorBody()}")

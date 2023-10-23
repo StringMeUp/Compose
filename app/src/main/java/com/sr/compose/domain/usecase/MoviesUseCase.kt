@@ -11,7 +11,6 @@ import javax.inject.Inject
 class MoviesUseCase @Inject constructor(private val repository: MovieRepository) :
     BaseUseCase<Unit, MovieState>() {
     private var movieUiState = MovieState()
-
     override suspend fun getMoviesAndGenres(): MovieState {
         repository.apply {
             getPopular().zip(getGenre()) { mov, gnr ->

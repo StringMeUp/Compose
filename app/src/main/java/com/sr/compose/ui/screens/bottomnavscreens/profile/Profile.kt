@@ -1,55 +1,65 @@
 package com.sr.compose.ui.screens.bottomnavscreens.profile
 
-import androidx.compose.foundation.layout.Column
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import com.sr.compose.ui.widgets.AppButton
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sr.compose.R
-import com.sr.compose.ui.widgets.default
+import com.sr.compose.domain.usecase.AuthState
 import com.sr.compose.ui.theme.ComposeMoviesTheme
-import com.sr.compose.ui.widgets.AppTextField
-import kotlinx.coroutines.launch
+import com.sr.compose.ui.widgets.AppButton
+import com.sr.compose.ui.widgets.default
+import com.sr.compose.util.launch
 
 @Composable
-fun ProfileScreen() {
-    LogIn()
+fun ProfileScreen(request_token: String? = null, clearStack: () -> Unit = {}) {
+    ProfileContent()
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileContent(
+    viewModel: AuthViewModel = hiltViewModel(),
+    clearStack: () -> Unit = {},
+) {
+    val uiState = viewModel.authState.value
+    InitialContent(
+        uiState = uiState,
+        triggerAuth = viewModel::getRequestToken,
+        handleRedirect = { request, launchIntent ->
+            viewModel.handleRedirect(
+                request,
+                launchIntent
+            )
+        },
+        clearStack = { clearStack() }
+    )
+}
+
+@Composable
+@Preview
+fun InitialContent(
+    uiState: AuthState = AuthState(),
+    triggerAuth: () -> Unit = {},
+    clearStack: () -> Unit = {},
+    handleRedirect: (request: WebResourceRequest?, launchIntent: (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (infoText, loginTextField, passwordTextField, loginButton, registerButton) = createRefs()
-        val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        var emailText by remember { mutableStateOf("") }
-        var passWordText by remember { mutableStateOf("") }
-        val scope = rememberCoroutineScope()
+        val (infoText, loginButton) = createRefs()
 
         Text(buildAnnotatedString {
             withStyle(default) {
@@ -62,77 +72,67 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                 centerHorizontallyTo(parent)
             })
 
-        AppTextField(label = "E-mail",
-            emailText,
-            onValueChange = { emailText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp)
-                .constrainAs(loginTextField) {
-                    top.linkTo(infoText.bottom)
-                })
-
-        AppTextField(label = "Password",
-            passWordText,
-            onValueChange = { passWordText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, top = 9.dp)
-                .constrainAs(passwordTextField) {
-                    top.linkTo(loginTextField.bottom)
-                })
-
         AppButton(text = "Log in",
             modifier = Modifier
                 .padding(top = 24.dp)
                 .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(loginButton) {
-                    top.linkTo(passwordTextField.bottom)
-                    start.linkTo(passwordTextField.start)
-                    end.linkTo(passwordTextField.end)
-                }, onCLick = { viewModel.getRequestToken() })
-
-        AppButton(text = "Continue as guest",
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
-                .constrainAs(registerButton) {
-                    top.linkTo(loginButton.bottom)
-                    centerHorizontallyTo(parent)
+                    top.linkTo(infoText.bottom)
+                    start.linkTo(infoText.start)
+                    end.linkTo(infoText.end)
                 },
             onCLick = {
-                scope.launch {
-                    sheetState.show()
-                }
+                triggerAuth()
             })
 
-        if (sheetState.isVisible) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    scope.launch { sheetState.hide() }
-                }, sheetState = SheetState(true)
-            ) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = colorResource(id = R.color.w_bg)
-                ) {
-                    Column() {
-                        Button(modifier = Modifier.wrapContentSize(), onClick = {
-                            scope.launch { sheetState.hide() }
-                        }) {
-                            Text("Hide bottom sheet")
+        if (uiState.hasRt)
+            LoadWebUrl(url = uiState.authUrl,
+                handleRedirect = { request, launchIntent -> handleRedirect(request, launchIntent) },
+                clearStack = { clearStack() }
+            )
+    }
+}
+
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun LoadWebUrl(
+    url: String?,
+    handleRedirect: (webResourceRequest: WebResourceRequest?, (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+    clearStack: () -> Unit = {},
+) {
+    AndroidView(
+        factory = {
+            WebView(it).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                    ): Boolean {
+                        return handleRedirect(request) { uri ->
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                uri()
+                            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).launch(context)
+                            clearStack()
                         }
                     }
                 }
+                settings.javaScriptEnabled = true
+                settings.domStorageEnabled = true
+                url?.let { loadUrl(it) }
             }
-        }
-    }
+        })
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TestUI() {
+fun ProfilePreview() {
     ComposeMoviesTheme {
-        LogIn()
+        ProfileContent()
     }
 }

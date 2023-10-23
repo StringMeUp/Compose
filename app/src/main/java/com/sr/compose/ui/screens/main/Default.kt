@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -40,6 +42,7 @@ fun DefaultArgsScreen(
 ) {
     ConstraintLayout(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
     ) {
@@ -118,7 +121,7 @@ fun DefaultArgsScreen(
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
                 onClick("Hooray this was a success. You just received nullable args.")
-//                handleNavigation(null)
+                /** onClick(null) Can be used to alternative. */
             }) {
             Text(
                 text = "Try nullable arguments?",
