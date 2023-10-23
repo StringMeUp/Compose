@@ -17,30 +17,41 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sr.compose.R
 import com.sr.compose.navigation.ComposeItem
+import com.sr.compose.util.helper.bold
+import com.sr.compose.util.helper.default
 
 @Composable
-fun SerializableArgsScreen(args: ComposeItem?, onButtonClick: () -> Unit = {}) {
+fun SerializableArgsScreen(args: ComposeItem?, onClick: () -> Unit = {}) {
     SetUpSerializable(args = args) {
-        onButtonClick()
+        onClick()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
-    ConstraintLayout(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         val (title, descr, spacer, image, button) = createRefs()
-        Text(text = args?.text ?: "Well, this didn't work honey.",
+        Text(
+            buildAnnotatedString {
+                withStyle(bold.copy(fontSize = 26.sp)) {
+                    append(args?.text ?: "Well, this didn't work honey.")
+                }
+            },
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
@@ -52,7 +63,8 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
                     end.linkTo(parent.end)
                 },
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold)
+            fontWeight = FontWeight.Bold
+        )
 
         Spacer(modifier = Modifier
             .height(24.dp)
@@ -63,7 +75,11 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
                 end.linkTo(parent.end)
             })
 
-        Text(text = stringResource(id = R.string.custom_serial),
+        Text(buildAnnotatedString {
+            withStyle(default) {
+                append(stringResource(id = R.string.custom_serializable_text))
+            }
+        },
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
@@ -88,10 +104,10 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-            contentScale = ContentScale.Crop)
+            contentScale = ContentScale.Crop
+        )
 
-        OutlinedButton(
-            enabled = true,
+        OutlinedButton(enabled = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp)

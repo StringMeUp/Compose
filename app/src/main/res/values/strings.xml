@@ -5,18 +5,21 @@
     <string name="nullable_desc">At nowhere</string>
     <string name="detail_serial">At serializable</string>
     <string name="detail_parcel">At parcelable</string>
-    <string name="custom_serial">"Passing custom Serializables/Parcelables is strictly speaking against core android principles, and also not recommended by the Jetpack Compose team. It is strongly recommended that you decouple the Navigation code from your composable destinations to enable testing each composable in isolation, separate from the NavHost composable.
-                \nThis means that you shouldn\'t pass the navController directly into any composable and instead pass navigation callbacks as parameters. This allows all your composables to be individually testable, as they don't require an instance of navController in tests.
-                \nThe level of indirection provided by the composable lambda is what allows you to separate your Navigation code from the composable itself. This works in two directions: Pass only parsed arguments into your composablePass lambdas that should be triggered by the composable to navigate, rather than the NavController itself."</string>
+    <string name="custom_serializable_text">"Passing custom Serializables/Parcelables is strictly speaking against core android principles, and also not recommended by the Jetpack Compose team.\n\nIn other words: it can but it shouldn't be done.\n\n In addition, tt is strongly recommended that you decouple the Navigation code from your composable destinations to enable testing each composable in isolation, separate from the NavHost composable.\n\nThat in turn means that your navController shouldn't be passed down to any composable.\n\nRather the composable itself should be responsible for triggering a callback and instructing the controller what to do next."\n\n</string>
     <string name="default_args">You\'ve just passed default arguments.</string>
 
+    <!-- Navigation -->
     <string name="bottom_one">Movie</string>
     <string name="bottom_two">Profile</string>
     <string name="bottom_three">Contacts</string>
     <string name="bottom_four">Settings</string>
-
     <string name="main_bottom_detail">Details</string>
     <string name="movie_detail">Details</string>
-    <string name="general_api_error">An error occured.</string>
+
+    <string name="general_api_error">An error occurred.</string>
+    <!--Note: Spans do not work with stringResource(). withText must be used. -->
+    <string name="default_args_text">Default arguments are passed with the route: The routes resemble a web link:\n\n<i>https://www.example.com/detail{args}</i>\n\nThey are received in the navGraph i.e.\n\n<i>backStackEntry.arguments?.getString(“value”)</i>.\n\nHence, it is useful to use  <b>pre-defined constants</b>.</string>
+    <string name="nullable_args_text">The same applies for nullable args. They are sent/retrieved through the navigation controller using the destination route.\n\nSerializable(s) (custom objects) comply by the same rules.\n\n
+        This project contains extension functions allowing you to pass custom objects.\n\nHowever…</string>
 
 </resources>

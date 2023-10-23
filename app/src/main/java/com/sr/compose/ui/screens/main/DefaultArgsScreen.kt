@@ -15,40 +15,49 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sr.compose.R
 import com.sr.compose.R.color
+import com.sr.compose.util.endIndex
+import com.sr.compose.util.helper.bold
+import com.sr.compose.util.helper.default
+import com.sr.compose.util.startIndex
 
 @Composable
 @Preview(showBackground = true)
 fun DefaultArgsScreen(
-    value: String? = null,
-    handleNavigation: (arg: String) -> Unit = {},
+    value: String = "",
+    onClick: (arg: String?) -> Unit = {},
 ) {
-    ConstraintLayout(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+    ) {
         val (title, descr, image, button) = createRefs()
 
-        Text(text = "Default Arguments: $value",
+        Text(
+            buildAnnotatedString {
+                withStyle(bold.copy(fontSize = 26.sp)) {
+                    append("Default Arguments: $value")
+                }
+            },
+            textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(top = 24.dp)
+                .padding(top = 12.dp)
                 .constrainAs(title) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-
-                },
-            color = Color.Black,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center)
+                    centerHorizontallyTo(parent)
+                }
+        )
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -68,20 +77,35 @@ fun DefaultArgsScreen(
                 }
                 .clip(shape = RoundedCornerShape(16.dp)), contentDescription = "At sea")
 
-        Text(text = "Default arguments are passed with the route: " +
-                "add/{value} and received in the navGraph i.e. " +
-                "backStackEntry.arguments?.getString(“value”). " +
-                "Hence it is extremely important to use pre-defined constants.",
+        Text(
+            buildAnnotatedString {
+                val text = stringResource(id = R.string.default_args_text)
+                withStyle(default.copy(fontSize = 18.sp)) {
+                    append(text)
+                    addStyle(bold.copy(fontSize = 18.sp), 0, "Default arguments".length)
+                    addStyle(
+                        bold.copy(fontSize = 18.sp),
+                        text.startIndex("https://www.example.com/detail{args}"),
+                        text.endIndex("https://www.example.com/detail{args}"),
+                    )
+
+                    addStyle(
+                        bold.copy(fontSize = 18.sp),
+                        text.startIndex("backStackEntry.arguments?.getString(“value”)"),
+                        text.endIndex("backStackEntry.arguments?.getString(“value”)"),
+                    )
+                }
+            },
             modifier = Modifier
                 .constrainAs(descr) {
                     top.linkTo(image.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-
                 },
             color = Color.Black,
             fontSize = 18.sp,
-            textAlign = TextAlign.Center)
+            textAlign = TextAlign.Center
+        )
 
         OutlinedButton(
             modifier = Modifier
@@ -94,7 +118,8 @@ fun DefaultArgsScreen(
                 .padding(24.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
-                handleNavigation("Nullable arguments: Successfully passed nullable args.")
+                onClick("Hooray this was a success. You just received nullable args.")
+//                handleNavigation(null)
             }) {
             Text(text = "Try nullable arguments?", color = Color.White)
         }

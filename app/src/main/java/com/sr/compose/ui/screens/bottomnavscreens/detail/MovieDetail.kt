@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.sr.compose.R
 import com.sr.compose.model.ImagesResponse
-import com.sr.compose.ui.helper.bold
+import com.sr.compose.util.helper.bold
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
 import com.sr.compose.ui.widgets.MovieCard
 

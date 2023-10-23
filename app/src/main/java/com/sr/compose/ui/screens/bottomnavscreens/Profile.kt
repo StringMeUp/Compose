@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sr.compose.R
-import com.sr.compose.ui.helper.default
+import com.sr.compose.util.helper.default
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.AppTextField
 import kotlinx.coroutines.launch
