@@ -118,7 +118,11 @@ fun SetUpSerializable(args: ComposeItem? = null, onClick: () -> Unit = {}) {
                 },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = com.sr.compose.R.color.s_color)),
             onClick = { onClick() }) {
-            Text(text = "Done", color = Color.White)
+            Text(
+                text = "Done",
+                color = Color.White,
+                modifier = Modifier.padding(4.dp)
+            )
         }
     }
 }

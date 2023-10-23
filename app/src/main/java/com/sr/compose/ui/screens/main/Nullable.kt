@@ -104,7 +104,11 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                 },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = { onClick() }) {
-            Text(text = "Navigate with serializable?!", color = Color.White)
+            Text(
+                text = "Navigate with serializable?!",
+                color = Color.White,
+                modifier = Modifier.padding(4.dp)
+            )
         }
     }
 }

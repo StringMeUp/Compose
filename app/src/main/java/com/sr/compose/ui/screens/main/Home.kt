@@ -18,20 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
 import com.sr.compose.util.clickWithDebounce
 import com.sr.compose.navigation.ComposeItem
+import com.sr.compose.ui.widgets.bold
 
 
 @Composable
 @Preview(showBackground = true)
 fun HomeScreen(
-    composeItems: () -> List<ComposeItem> = { emptyList() },
-    handleOnItemClick: (item: ComposeItem) -> Unit = {},
+    composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
+    onItemClick: (item: ComposeItem) -> Unit = {},
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     LazyColumn(
@@ -42,7 +46,7 @@ fun HomeScreen(
         items(composeItems()) {
             CardRow(item = it) { item ->
                 if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                    handleOnItemClick(item)
+                    onItemClick(item)
                 }
             }
         }
@@ -77,17 +81,23 @@ fun CardRow(item: ComposeItem, onItemClick: (ComposeItem) -> Unit) {
             )
 
             Text(
-                text = item.text,
+                buildAnnotatedString {
+                    withStyle(bold){
+                        append(item.text)
+                    }
+                },
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
+                    .padding(32.dp)
                     .constrainAs(text) {
                         start.linkTo(image.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end)
-                    },
+                        width = Dimension.fillToConstraints
+                    }
             )
         }
     }

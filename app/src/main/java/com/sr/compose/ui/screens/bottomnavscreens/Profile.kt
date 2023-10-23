@@ -84,22 +84,22 @@ fun LogIn() {
         AppButton(text = "Log in",
             modifier = Modifier
                 .padding(top = 24.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 48.dp)
+                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(loginButton) {
                     top.linkTo(passwordTextField.bottom)
                     start.linkTo(passwordTextField.start)
                     end.linkTo(passwordTextField.end)
                 })
 
-        AppButton(text = "Register",
+        AppButton(text = "Continue as guest",
             modifier = Modifier
-                .padding(top = 12.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 48.dp)
+                .padding(top = 4.dp)
+                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(registerButton) {
                     top.linkTo(loginButton.bottom)
                     centerHorizontallyTo(parent)
                 },
-            onClickEvent = {
+            onCLick = {
                 scope.launch {
                     sheetState.show()
                 }
@@ -109,7 +109,6 @@ fun LogIn() {
             ModalBottomSheet(
                 onDismissRequest = {
                     scope.launch { sheetState.hide() }
-
                 }, sheetState = SheetState(true)
             ) {
                 Surface(

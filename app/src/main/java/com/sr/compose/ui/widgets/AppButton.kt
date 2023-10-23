@@ -13,11 +13,11 @@ import com.sr.compose.R
 fun AppButton(
     text: String = "",
     isEnabled: Boolean = true,
-    onClickEvent: () -> Unit = {},
+    onCLick: () -> Unit = {},
     modifier: Modifier,
 ) {
     OutlinedButton(
-        onClick = { onClickEvent() },
+        onClick = { onCLick() },
         modifier = modifier,
         enabled = isEnabled,
         colors = ButtonDefaults.buttonColors(
