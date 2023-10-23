@@ -132,8 +132,8 @@ fun NavGraphBuilder.rootArgsGraph(
         }
     ) { backStackEntry ->
         DefaultArgsScreen(
-            value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Default),
-            handleNavigation = {
+            value = backStackEntry.arguments?.getString(NavigationConstants.Arg_Default) ?: "",
+            onClick = {
                 navController.navigate(
                     NavigationItem.withNullableRouteArgs(
                         NavigationItem.NullableArgs,
@@ -152,10 +152,10 @@ fun NavGraphBuilder.rootArgsGraph(
     ) { backStackEntry ->
         NullableArgsScreen(
             args = backStackEntry.arguments?.getString(NavigationConstants.Arg_Nullable),
-            handleCustomSerializableCLick = {
+            onClick = {
                 val route = withCustomSerializable(
                     NavigationItem.SerializableArgs,
-                    ComposeItem("Custom serializable.", R.drawable.ic_close)
+                    ComposeItem("...thumbs up for custom Serializable objects...", R.drawable.ic_close)
                 )
                 navController.navigate(route = route) {
                     popUpTo(NavigationItem.Main.route)

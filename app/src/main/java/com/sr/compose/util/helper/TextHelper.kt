@@ -1,4 +1,4 @@
-package com.sr.compose.ui.helper
+package com.sr.compose.util.helper
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

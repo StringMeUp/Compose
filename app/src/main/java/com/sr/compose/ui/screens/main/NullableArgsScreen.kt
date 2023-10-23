@@ -2,7 +2,9 @@ package com.sr.compose.ui.screens.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedButton
@@ -14,37 +16,51 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.sr.compose.R
 import com.sr.compose.R.color
 import com.sr.compose.R.drawable
+import com.sr.compose.util.helper.bold
+import com.sr.compose.util.helper.default
 
 
 @Composable
-fun NullableArgsScreen(args: String?, handleCustomSerializableCLick: () -> Unit = {}) {
+fun NullableArgsScreen(args: String?, onClick: () -> Unit = {}) {
     SetUpView(args = args) {
-        handleCustomSerializableCLick()
+        onClick()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (argText, card) = createRefs()
-        Text(text = args ?: "Hmmm...this did not work as expected!",
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        val (argText, descrText, card, button) = createRefs()
+
+        Text(buildAnnotatedString {
+            withStyle(bold.copy(fontSize = 26.sp)) {
+                append(args ?: "Hmm...this did not work as expected!")
+            }
+        },
             textAlign = TextAlign.Center,
             color = Color.Black,
             modifier = Modifier
                 .padding(top = 24.dp)
                 .constrainAs(argText) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                    centerHorizontallyTo(parent)
                 }
                 .fillMaxWidth(),
             fontSize = 24.sp,
@@ -59,22 +75,34 @@ fun SetUpView(args: String? = null, onClick: () -> Unit = {}) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-            Image(modifier = Modifier.fillMaxWidth(),
+            Image(
+                modifier = Modifier.fillMaxWidth(),
                 painter = painterResource(id = drawable.all_night),
                 contentDescription = "",
-                contentScale = ContentScale.Crop)
+                contentScale = ContentScale.Crop
+            )
         }
-    }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 32.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(buildAnnotatedString {
+            val text = stringResource(id = R.string.nullable_args_text)
+            withStyle(default.copy(fontSize = 18.sp)) {
+                append(text)
+            }
+        }, modifier = Modifier.constrainAs(descrText) {
+            top.linkTo(card.bottom)
+        }, color = Color.Black,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
+        )
+
         OutlinedButton(enabled = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .padding(24.dp)
+                .constrainAs(button) {
+                    top.linkTo(descrText.bottom)
+                    centerHorizontallyTo(parent)
+                },
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = { onClick() }) {
             Text(text = "Navigate with serializable?!", color = Color.White)
