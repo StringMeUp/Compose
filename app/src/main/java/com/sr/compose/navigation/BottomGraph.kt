@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
-import com.sr.compose.ui.screens.bottomnavscreens.ProfileScreen
+import com.sr.compose.ui.screens.bottomnavscreens.profile.ProfileScreen
 import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
