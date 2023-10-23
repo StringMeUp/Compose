@@ -1,4 +1,4 @@
-package com.sr.compose.ui.screens.bottomnavscreens
+package com.sr.compose.ui.screens.bottomnavscreens.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sr.compose.R
 import com.sr.compose.ui.widgets.default
 import com.sr.compose.ui.theme.ComposeMoviesTheme
@@ -42,7 +43,7 @@ fun ProfileScreen() {
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LogIn() {
+fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (infoText, loginTextField, passwordTextField, loginButton, registerButton) = createRefs()
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -89,7 +90,7 @@ fun LogIn() {
                     top.linkTo(passwordTextField.bottom)
                     start.linkTo(passwordTextField.start)
                     end.linkTo(passwordTextField.end)
-                })
+                }, onCLick = { viewModel.getRequestToken() })
 
         AppButton(text = "Continue as guest",
             modifier = Modifier

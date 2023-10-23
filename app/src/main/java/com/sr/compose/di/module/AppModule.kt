@@ -1,7 +1,10 @@
 package com.sr.compose.di.module
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.sr.compose.BuildConfig
 import com.sr.compose.api.MovieApi
 import com.sr.compose.api.NetworkConstants
 import com.sr.compose.util.LocalDateConverter
@@ -9,6 +12,7 @@ import com.sr.compose.api.OAuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,6 +26,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun providePrefs(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 
     @Singleton
     @Provides
