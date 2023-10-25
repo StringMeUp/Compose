@@ -38,12 +38,6 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-        //todo Handle received rt
-    }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

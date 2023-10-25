@@ -59,12 +59,9 @@ fun ProfileScreen(request_token: String? = null) {
 @Composable
 fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (infoText, loginTextField, passwordTextField, loginButton, registerButton) = createRefs()
+        val (infoText, loginButton) = createRefs()
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        var emailText by remember { mutableStateOf("") }
-        var passWordText by remember { mutableStateOf("") }
         val scope = rememberCoroutineScope()
-
 
         Text(buildAnnotatedString {
             withStyle(default) {
@@ -82,27 +79,12 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                 .padding(top = 24.dp)
                 .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
                 .constrainAs(loginButton) {
-                    top.linkTo(passwordTextField.bottom)
-                    start.linkTo(passwordTextField.start)
-                    end.linkTo(passwordTextField.end)
+                    top.linkTo(infoText.bottom)
+                    start.linkTo(infoText.start)
+                    end.linkTo(infoText.end)
                 },
             onCLick = {
                 viewModel.getRequestToken()
-            })
-
-
-        AppButton(text = "Continue as guest",
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .defaultMinSize(minWidth = 140.dp, minHeight = 42.dp)
-                .constrainAs(registerButton) {
-                    top.linkTo(loginButton.bottom)
-                    centerHorizontallyTo(parent)
-                },
-            onCLick = {
-                scope.launch {
-                    sheetState.show()
-                }
             })
 
         if (sheetState.isVisible) {
@@ -127,17 +109,7 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
 
         if (viewModel.authState.value.hasRt)
             LoadWebUrl(url = viewModel.authState.value.authUrl, viewModel = viewModel)
-//            urlIntent(url = viewModel.authState.value.authUrl)
     }
-}
-
-@Composable
-fun urlIntent(url: String?) {
-
-    val webIntent: Intent = Uri.parse(url).let { webpage ->
-        Intent(Intent.ACTION_VIEW, webpage)
-    }
-    startActivity(LocalContext.current, webIntent, null)
 }
 
 @SuppressLint("SetJavaScriptEnabled")
