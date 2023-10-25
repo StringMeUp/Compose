@@ -6,16 +6,17 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.sr.compose.ui.screens.bottomnavscreens.ContactsScreen
-import com.sr.compose.ui.screens.bottomnavscreens.profile.ProfileScreen
 import com.sr.compose.ui.screens.bottomnavscreens.SettingsScreen
 import com.sr.compose.ui.screens.bottomnavscreens.detail.MovieDetailScreen
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieScreen
 import com.sr.compose.ui.screens.bottomnavscreens.movie.MovieViewModel
+import com.sr.compose.ui.screens.bottomnavscreens.profile.ProfileScreen
 import com.sr.compose.util.parentViewModel
 
 
-fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.bottomGraph(navController: NavHostController) {
     navigation(
         startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
         route = Graph.BOTTOM
@@ -37,8 +38,14 @@ fun NavGraphBuilder.bottomNavGraph(navController: NavHostController) {
 
             })
         }
-        composable(route = NavigationItem.BottomNavigation.BottomNavProfile.route) {
-            ProfileScreen()
+        composable(
+            route = NavigationItem.BottomNavigation.BottomNavProfile.route,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = NavigationConstants.Profile_Uri_Pattern
+            })
+        ) {
+            val rt = it.arguments?.getString(NavigationConstants.Request_Token)
+            ProfileScreen(request_token = rt)
         }
         composable(route = NavigationItem.BottomNavigation.BottomNavContacts.route) {
             ContactsScreen()

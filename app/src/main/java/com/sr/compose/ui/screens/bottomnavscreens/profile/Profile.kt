@@ -1,5 +1,12 @@
 package com.sr.compose.ui.screens.bottomnavscreens.profile
 
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,24 +27,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.sr.compose.ui.widgets.AppButton
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sr.compose.R
-import com.sr.compose.ui.widgets.default
+import com.sr.compose.api.NetworkConstants
 import com.sr.compose.ui.theme.ComposeMoviesTheme
+import com.sr.compose.ui.widgets.AppButton
 import com.sr.compose.ui.widgets.AppTextField
+import com.sr.compose.ui.widgets.default
+import com.sr.compose.util.launch
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(request_token: String? = null) {
+    Timber.tag("REQUEST_TOKEN_VALID").d("$request_token")
     LogIn()
 }
 
@@ -51,6 +65,7 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
         var passWordText by remember { mutableStateOf("") }
         val scope = rememberCoroutineScope()
 
+
         Text(buildAnnotatedString {
             withStyle(default) {
                 append("Hello, if you haven't logged in yet, please do so.\n\n")
@@ -62,26 +77,6 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                 centerHorizontallyTo(parent)
             })
 
-        AppTextField(label = "E-mail",
-            emailText,
-            onValueChange = { emailText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp)
-                .constrainAs(loginTextField) {
-                    top.linkTo(infoText.bottom)
-                })
-
-        AppTextField(label = "Password",
-            passWordText,
-            onValueChange = { passWordText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, top = 9.dp)
-                .constrainAs(passwordTextField) {
-                    top.linkTo(loginTextField.bottom)
-                })
-
         AppButton(text = "Log in",
             modifier = Modifier
                 .padding(top = 24.dp)
@@ -90,7 +85,11 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                     top.linkTo(passwordTextField.bottom)
                     start.linkTo(passwordTextField.start)
                     end.linkTo(passwordTextField.end)
-                }, onCLick = { viewModel.getRequestToken() })
+                },
+            onCLick = {
+                viewModel.getRequestToken()
+            })
+
 
         AppButton(text = "Continue as guest",
             modifier = Modifier
@@ -113,8 +112,7 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                 }, sheetState = SheetState(true)
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = colorResource(id = R.color.w_bg)
+                    modifier = Modifier.fillMaxSize(), color = colorResource(id = R.color.w_bg)
                 ) {
                     Column() {
                         Button(modifier = Modifier.wrapContentSize(), onClick = {
@@ -126,7 +124,54 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                 }
             }
         }
+
+        if (viewModel.authState.value.hasRt)
+            LoadWebUrl(url = viewModel.authState.value.authUrl, viewModel = viewModel)
+//            urlIntent(url = viewModel.authState.value.authUrl)
     }
+}
+
+@Composable
+fun urlIntent(url: String?) {
+
+    val webIntent: Intent = Uri.parse(url).let { webpage ->
+        Intent(Intent.ACTION_VIEW, webpage)
+    }
+    startActivity(LocalContext.current, webIntent, null)
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun LoadWebUrl(url: String?, viewModel: ProfileViewModel) {
+    AndroidView(
+        factory = {
+            WebView(it).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                    ): Boolean {
+                        val isAppRedirect =
+                            request?.url?.lastPathSegment == NetworkConstants.PATH_CONFIRMED
+                        if (isAppRedirect) {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                viewModel.getAppRedirectUri(request = request)
+                            ).launch(context)
+                            return true
+                        }
+                        return false
+                    }
+                }
+                settings.javaScriptEnabled = true
+                settings.domStorageEnabled = true
+                url?.let { loadUrl(it) }
+            }
+        })
 }
 
 @Preview(showBackground = true)

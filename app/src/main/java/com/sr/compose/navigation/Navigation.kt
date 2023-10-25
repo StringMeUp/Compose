@@ -16,6 +16,6 @@ fun AppNavigation(
         route = Graph.ROOT
     ) {
         rootGraph(navController, composeItems)
-        bottomNavGraph(navController)
+        bottomGraph(navController)
     }
 }

@@ -15,10 +15,12 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Compose"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.Compose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +31,23 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="com.sr.compose"
+                    android:scheme="srcapp" />
+            </intent-filter>
         </activity>
     </application>
+
+    <queries>
+        <intent>
+            <category android:name="android.intent.category.DEFAULT" />
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="srcapp" />
+        </intent>
+    </queries>
 
 </manifest>

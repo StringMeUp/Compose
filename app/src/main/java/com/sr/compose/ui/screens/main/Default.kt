@@ -118,7 +118,7 @@ fun DefaultArgsScreen(
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = color.s_color)),
             onClick = {
                 onClick("Hooray this was a success. You just received nullable args.")
-//                handleNavigation(null)
+                /** onClick(null) Can be used to alternative. */
             }) {
             Text(
                 text = "Try nullable arguments?",

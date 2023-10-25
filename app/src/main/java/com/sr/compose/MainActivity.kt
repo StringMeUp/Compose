@@ -1,6 +1,7 @@
 package com.sr.compose
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,7 @@ import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.BottomBar
 import com.sr.compose.ui.widgets.TopBar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,6 +37,12 @@ class MainActivity : ComponentActivity() {
                 composeItems = { viewModel.items.value }
             )
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        //todo Handle received rt
     }
 }
 

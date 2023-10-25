@@ -7,7 +7,8 @@ import com.sr.compose.model.MovieResponse
 /** Resource */
 fun <T> Resource<T>.evaluateResource(
     onLoading: () -> Unit = {},
-    onSuccess: (data: T?) -> Unit,
+    onSuccess: (data: T?) -> Unit = {},
+    onSuccessAuth: (data: T?, url: String?) -> Unit = { _, _ -> },
     onError: () -> Unit,
 ): Unit = when (this) {
     Resource.Loading -> {
@@ -19,7 +20,8 @@ fun <T> Resource<T>.evaluateResource(
     }
 
     is Resource.Success -> {
-        onSuccess(this.data)
+        onSuccessAuth(data, authUrl())
+        onSuccess(data)
     }
 }
 

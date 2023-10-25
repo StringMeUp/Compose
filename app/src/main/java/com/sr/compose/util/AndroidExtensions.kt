@@ -1,6 +1,10 @@
 package com.sr.compose.util
 
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -64,11 +68,31 @@ inline fun <reified VM : ViewModel> parentViewModel(
     return hiltViewModel(parentBackStackEntry)
 }
 
-/** String*/
+/** String */
 fun String.startIndex(string: String): Int {
     return this.indexOf(string = string)
 }
 
 fun String.endIndex(string: String): Int {
     return this.indexOf(string = string).plus(string.length)
+}
+
+/** Intent */
+fun Intent.launch(context: Context) {
+    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (context.packageManager.queryIntentActivities(
+                this, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+            ).isNotEmpty()
+        ) {
+            context.startActivity(this)
+        }
+    } else {
+        if (context.packageManager.queryIntentActivities(
+                this, PackageManager.GET_META_DATA
+            ).isNotEmpty()
+        ) {
+            context.startActivity(this)
+        }
+    }
 }
