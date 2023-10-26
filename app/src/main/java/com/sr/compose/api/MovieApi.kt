@@ -27,7 +27,5 @@ interface MovieApi {
     @GET("/3/authentication/token/new")
     suspend fun requestToken(): Response<RequestTokenResponse>
 
-//    https://www.themoviedb.org/authenticate/{REQUEST_TOKEN}?redirect_to=http://www.yourapp.com/approved
-
 }
 

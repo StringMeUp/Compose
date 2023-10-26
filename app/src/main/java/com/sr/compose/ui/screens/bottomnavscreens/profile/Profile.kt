@@ -7,61 +7,50 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sr.compose.R
-import com.sr.compose.api.NetworkConstants
+import com.sr.compose.domain.usecase.AuthState
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.AppButton
-import com.sr.compose.ui.widgets.AppTextField
 import com.sr.compose.ui.widgets.default
 import com.sr.compose.util.launch
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun ProfileScreen(request_token: String? = null) {
-    Timber.tag("REQUEST_TOKEN_VALID").d("$request_token")
-    LogIn()
+    ProfileContent()
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileContent(
+    viewModel: AuthViewModel = hiltViewModel(),
+) {
+    val uiState = viewModel.authState.value
+    InitialContent(
+        uiState = uiState,
+        triggerAuth = viewModel::getRequestToken
+    ) { a, b -> viewModel.handleRedirect(a, b) }
+}
+
+@Composable
+@Preview
+fun InitialContent(
+    uiState: AuthState = AuthState(),
+    triggerAuth: () -> Unit = {},
+    handleRedirect: (request: WebResourceRequest?, launchIntent: (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (infoText, loginButton) = createRefs()
-        val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        val scope = rememberCoroutineScope()
 
         Text(buildAnnotatedString {
             withStyle(default) {
@@ -84,37 +73,21 @@ fun LogIn(viewModel: ProfileViewModel = hiltViewModel()) {
                     end.linkTo(infoText.end)
                 },
             onCLick = {
-                viewModel.getRequestToken()
+                triggerAuth()
             })
 
-        if (sheetState.isVisible) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    scope.launch { sheetState.hide() }
-                }, sheetState = SheetState(true)
-            ) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = colorResource(id = R.color.w_bg)
-                ) {
-                    Column() {
-                        Button(modifier = Modifier.wrapContentSize(), onClick = {
-                            scope.launch { sheetState.hide() }
-                        }) {
-                            Text("Hide bottom sheet")
-                        }
-                    }
-                }
-            }
-        }
-
-        if (viewModel.authState.value.hasRt)
-            LoadWebUrl(url = viewModel.authState.value.authUrl, viewModel = viewModel)
+        if (uiState.hasRt)
+            LoadWebUrl(url = uiState.authUrl) { a, b -> handleRedirect(a, b) }
     }
 }
 
+
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun LoadWebUrl(url: String?, viewModel: ProfileViewModel) {
+fun LoadWebUrl(
+    url: String?,
+    handleF: (webResourceRequest: WebResourceRequest?, (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+) {
     AndroidView(
         factory = {
             WebView(it).apply {
@@ -127,16 +100,9 @@ fun LoadWebUrl(url: String?, viewModel: ProfileViewModel) {
                         view: WebView?,
                         request: WebResourceRequest?,
                     ): Boolean {
-                        val isAppRedirect =
-                            request?.url?.lastPathSegment == NetworkConstants.PATH_CONFIRMED
-                        if (isAppRedirect) {
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                viewModel.getAppRedirectUri(request = request)
-                            ).launch(context)
-                            return true
+                        return handleF(request) { uri ->
+                            Intent(Intent.ACTION_VIEW, uri()).launch(context)
                         }
-                        return false
                     }
                 }
                 settings.javaScriptEnabled = true
@@ -148,8 +114,8 @@ fun LoadWebUrl(url: String?, viewModel: ProfileViewModel) {
 
 @Preview(showBackground = true)
 @Composable
-fun TestUI() {
+fun ProfilePreview() {
     ComposeMoviesTheme {
-        LogIn()
+        ProfileContent()
     }
 }
