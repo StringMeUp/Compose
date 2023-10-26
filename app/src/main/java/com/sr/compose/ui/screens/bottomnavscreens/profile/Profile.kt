@@ -38,8 +38,14 @@ fun ProfileContent(
     val uiState = viewModel.authState.value
     InitialContent(
         uiState = uiState,
-        triggerAuth = viewModel::getRequestToken
-    ) { a, b -> viewModel.handleRedirect(a, b) }
+        triggerAuth = viewModel::getRequestToken,
+        handleRedirect = { request, launchIntent ->
+            viewModel.handleRedirect(
+                request,
+                launchIntent
+            )
+        }
+    )
 }
 
 @Composable
@@ -77,7 +83,8 @@ fun InitialContent(
             })
 
         if (uiState.hasRt)
-            LoadWebUrl(url = uiState.authUrl) { a, b -> handleRedirect(a, b) }
+            LoadWebUrl(url = uiState.authUrl,
+                handleRedirect = { request, launchIntent -> handleRedirect(request, launchIntent) })
     }
 }
 
@@ -86,7 +93,7 @@ fun InitialContent(
 @Composable
 fun LoadWebUrl(
     url: String?,
-    handleF: (webResourceRequest: WebResourceRequest?, (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+    handleRedirect: (webResourceRequest: WebResourceRequest?, (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
 ) {
     AndroidView(
         factory = {
@@ -100,7 +107,7 @@ fun LoadWebUrl(
                         view: WebView?,
                         request: WebResourceRequest?,
                     ): Boolean {
-                        return handleF(request) { uri ->
+                        return handleRedirect(request) { uri ->
                             Intent(Intent.ACTION_VIEW, uri()).launch(context)
                         }
                     }

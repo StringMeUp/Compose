@@ -56,8 +56,8 @@ fun BottomBar(
                     selected = currentRoute == item.route,
                     onClick = {
                         navController.navigate(item.route) {
-                            navController.graph.startDestinationRoute?.let { _ ->
-                                popUpTo(NavigationItem.BottomNavigation.BottomNavMovie.route) {
+                            navController.graph.startDestinationRoute?.let { rrr ->
+                                popUpTo(rrr) {
                                     saveState = true
                                 }
                             }
