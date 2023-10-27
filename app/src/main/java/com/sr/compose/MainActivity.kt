@@ -1,7 +1,6 @@
 package com.sr.compose
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sr.compose.navigation.AppNavigation
@@ -21,20 +22,26 @@ import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.BottomBar
 import com.sr.compose.ui.widgets.TopBar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            navController = rememberNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
             val viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+
             ComposeApp(
                 isTopBarVisible = { viewModel.topBarState.value },
                 isBottomBarVisible = { viewModel.bottomBarState.value },
                 setTopBar = { isVisible -> viewModel.setTopBarState(isVisible) },
                 setBottomBar = { isVisible -> viewModel.setBottomBarState(isVisible) },
-                composeItems = { viewModel.items.value }
+                composeItems = { viewModel.items.value },
+                navController = navController,
+                navBackStackEntry = navBackStackEntry
             )
         }
     }
@@ -49,10 +56,10 @@ fun ComposeApp(
     setTopBar: (isVisible: Boolean) -> Unit = {},
     setBottomBar: (isVisible: Boolean) -> Unit = {},
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
+    navController: NavHostController = rememberNavController(),
+    navBackStackEntry: NavBackStackEntry? = navController.currentBackStackEntry,
 ) {
     ComposeMoviesTheme {
-        val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
         Scaffold(
             bottomBar = {
                 BottomBar(

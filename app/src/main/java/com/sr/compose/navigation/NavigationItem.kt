@@ -32,7 +32,7 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
         )
 
         object BottomNavContacts : NavigationItem(
-            route = "Contacts", icon = R.drawable.ic_contacts,
+            route = "Contact", icon = R.drawable.ic_contacts,
             name = R.string.bottom_four
         )
 

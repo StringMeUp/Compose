@@ -108,7 +108,10 @@ fun LoadWebUrl(
                         request: WebResourceRequest?,
                     ): Boolean {
                         return handleRedirect(request) { uri ->
-                            Intent(Intent.ACTION_VIEW, uri()).launch(context)
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                uri()
+                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).launch(context)
                         }
                     }
                 }
