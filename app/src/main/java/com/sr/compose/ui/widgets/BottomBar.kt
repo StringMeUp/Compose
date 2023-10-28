@@ -5,15 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.BottomNavigation
-import androidx.compose.runtime.getValue
-
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -21,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.sr.compose.R
 import com.sr.compose.navigation.Graph
 import com.sr.compose.navigation.NavigationItem
@@ -31,9 +27,9 @@ import timber.log.Timber
 fun BottomBar(
     currentRoute: String? = "",
     isVisible: Boolean = false,
-    navController: NavController,
+    navController: NavHostController,
 ) {
-    val items = NavigationItem.BottomNavigation.bottomNavDestinations()
+    val items = NavigationItem.BottomNavMain.bottomNavDestinations()
 
     AnimatedVisibility(
         visible = isVisible,
@@ -45,17 +41,11 @@ fun BottomBar(
             backgroundColor = colorResource(id = R.color.s_color),
             contentColor = Color.Black
         ) {
+
             items.forEach { item ->
                 BottomNavigationItem(
                     onClick = {
-                        navController.navigate(item.route) {
-                            popUpTo(currentRoute ?: Graph.BOTTOM) {
-                                saveState = true
-                                inclusive = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        navController.navigateBottomNavigationScreen(item)
                     },
                     icon = {
                         Icon(

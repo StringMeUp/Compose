@@ -18,14 +18,15 @@ import com.sr.compose.util.parentViewModel
 
 fun NavGraphBuilder.bottomGraph(navController: NavHostController) {
     navigation(
-        startDestination = NavigationItem.BottomNavigation.BottomNavMovie.route,
+        startDestination = NavigationItem.BottomNavMain.BottomNavContacts.route,
         route = Graph.BOTTOM
     ) {
-        composable(route = NavigationItem.BottomNavigation.BottomNavMovie.route) {
+
+        composable(route = NavigationItem.BottomNavMain.route) {
             MovieScreen(navigateToDetails = { movieId ->
                 navController.navigate(
                     route = NavigationItem.withRouteArgs(
-                        NavigationItem.BottomNavigation.MovieDetail,
+                        NavigationItem.BottomNavMain.MovieDetail,
                         movieId
                     )
                 )
@@ -39,22 +40,22 @@ fun NavGraphBuilder.bottomGraph(navController: NavHostController) {
             })
         }
         composable(
-            route = NavigationItem.BottomNavigation.BottomNavProfile.route,
+            route = NavigationItem.BottomNavMain.BottomNavProfile.route,
             deepLinks = listOf(navDeepLink {
                 uriPattern = NavigationConstants.Profile_Uri_Pattern
             })
         ) {
             val rt = it.arguments?.getString(NavigationConstants.Request_Token)
-            ProfileScreen(request_token = rt)
+            ProfileScreen(request_token = rt) { navController.popBackStack() }
         }
-        composable(route = NavigationItem.BottomNavigation.BottomNavContacts.route) {
+        composable(route = NavigationItem.BottomNavMain.BottomNavContacts.route) {
             ContactsScreen()
         }
-        composable(route = NavigationItem.BottomNavigation.BottomNavSettings.route) {
+        composable(route = NavigationItem.BottomNavMain.BottomNavSettings.route) {
             SettingsScreen()
         }
         composable(
-            route = NavigationItem.BottomNavigation.MovieDetail.route,
+            route = NavigationItem.BottomNavMain.MovieDetail.route,
             arguments = listOf(navArgument(name = NavigationConstants.Arg_Movie_Detail) {
                 type = NavType.IntType
                 nullable = false
@@ -64,7 +65,7 @@ fun NavGraphBuilder.bottomGraph(navController: NavHostController) {
             val arguments = it.arguments?.getInt(NavigationConstants.Arg_Movie_Detail)
             val viewModel: MovieViewModel = parentViewModel(
                 navController = navController,
-                route = NavigationItem.BottomNavigation.BottomNavMovie.route
+                route = NavigationItem.BottomNavMain.route
             )
             MovieDetailScreen(args = arguments!!, viewModel = viewModel)
         }

@@ -27,13 +27,14 @@ import com.sr.compose.ui.widgets.default
 import com.sr.compose.util.launch
 
 @Composable
-fun ProfileScreen(request_token: String? = null) {
+fun ProfileScreen(request_token: String? = null, clearStack: () -> Unit = {}) {
     ProfileContent()
 }
 
 @Composable
 fun ProfileContent(
     viewModel: AuthViewModel = hiltViewModel(),
+    clearStack: () -> Unit = {},
 ) {
     val uiState = viewModel.authState.value
     InitialContent(
@@ -44,7 +45,8 @@ fun ProfileContent(
                 request,
                 launchIntent
             )
-        }
+        },
+        clearStack = { clearStack() }
     )
 }
 
@@ -53,6 +55,7 @@ fun ProfileContent(
 fun InitialContent(
     uiState: AuthState = AuthState(),
     triggerAuth: () -> Unit = {},
+    clearStack: () -> Unit = {},
     handleRedirect: (request: WebResourceRequest?, launchIntent: (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
 ) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -84,7 +87,9 @@ fun InitialContent(
 
         if (uiState.hasRt)
             LoadWebUrl(url = uiState.authUrl,
-                handleRedirect = { request, launchIntent -> handleRedirect(request, launchIntent) })
+                handleRedirect = { request, launchIntent -> handleRedirect(request, launchIntent) },
+                clearStack = { clearStack() }
+            )
     }
 }
 
@@ -94,6 +99,7 @@ fun InitialContent(
 fun LoadWebUrl(
     url: String?,
     handleRedirect: (webResourceRequest: WebResourceRequest?, (getUri: () -> Uri) -> Unit) -> Boolean = { _, _ -> false },
+    clearStack: () -> Unit = {},
 ) {
     AndroidView(
         factory = {
@@ -111,7 +117,8 @@ fun LoadWebUrl(
                             Intent(
                                 Intent.ACTION_VIEW,
                                 uri()
-                            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).launch(context)
+                            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).launch(context)
+                            clearStack()
                         }
                     }
                 }
