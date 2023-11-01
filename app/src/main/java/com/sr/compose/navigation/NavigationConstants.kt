@@ -7,5 +7,6 @@ object NavigationConstants {
     const val Arg_Movie_Detail = "arg_movie_detail"
 
     const val Request_Token = "rt_arg"
-    const val Profile_Uri_Pattern = "srcapp://com.sr.compose/{${Request_Token}}"
+    const val Scheme = "srcapp"
+    const val Profile_Uri_Pattern = "$Scheme://com.sr.compose/{${Request_Token}}"
 }

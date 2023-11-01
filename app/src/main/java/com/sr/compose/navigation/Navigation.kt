@@ -20,68 +20,68 @@ import com.sr.compose.util.parentViewModel
 fun AppNavigation(
     navController: NavHostController,
     composeItems: () -> List<ComposeItem> = { ComposeItem.generate() },
-    startDestination: String? = NavigationItem.BottomNavMain.route
+    startDestination: String? = NavigationItem.Main.route
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination!!,
-        route = Graph.BOTTOM
+        route = Graph.ROOT
     ) {
-//        rootGraph(navController, composeItems)
-//        bottomGraph(navController)
+        rootGraph(navController, composeItems)
+        bottomGraph(navController)
 
-        composable(route = NavigationItem.BottomNavMain.route) {
-            MovieScreen(navigateToDetails = { movieId ->
-                navController.navigate(
-                    route = NavigationItem.withRouteArgs(
-                        NavigationItem.BottomNavMain.MovieDetail,
-                        movieId
-                    )
-                )
-
-                /**  Using replace  navController.navigate(
-                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
-                oldValue = NavigationConstants.Arg_Movie_Detail,
-                newValue = movieId
-                ))*/
-
-                /**  Using replace  navController.navigate(
-                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
-                oldValue = NavigationConstants.Arg_Movie_Detail,
-                newValue = movieId
-                ))*/
-
-            })
-        }
-        composable(
-            route = NavigationItem.BottomNavMain.BottomNavProfile.route,
-            deepLinks = listOf(navDeepLink {
-                uriPattern = NavigationConstants.Profile_Uri_Pattern
-            })
-        ) {
-            val rt = it.arguments?.getString(NavigationConstants.Request_Token)
-            ProfileScreen(request_token = rt) { navController.popBackStack() }
-        }
-        composable(route = NavigationItem.BottomNavMain.BottomNavContacts.route) {
-            ContactsScreen()
-        }
-        composable(route = NavigationItem.BottomNavMain.BottomNavSettings.route) {
-            SettingsScreen()
-        }
-        composable(
-            route = NavigationItem.BottomNavMain.MovieDetail.route,
-            arguments = listOf(navArgument(name = NavigationConstants.Arg_Movie_Detail) {
-                type = NavType.IntType
-                nullable = false
-
-            })
-        ) {
-            val arguments = it.arguments?.getInt(NavigationConstants.Arg_Movie_Detail)
-            val viewModel: MovieViewModel = parentViewModel(
-                navController = navController,
-                route = NavigationItem.BottomNavMain.route
-            )
-            MovieDetailScreen(args = arguments!!, viewModel = viewModel)
-        }
+//        composable(route = NavigationItem.BottomNavMain.route) {
+//            MovieScreen(navigateToDetails = { movieId ->
+//                navController.navigate(
+//                    route = NavigationItem.withRouteArgs(
+//                        NavigationItem.BottomNavMain.MovieDetail,
+//                        movieId
+//                    )
+//                )
+//
+//                /**  Using replace  navController.navigate(
+//                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
+//                oldValue = NavigationConstants.Arg_Movie_Detail,
+//                newValue = movieId
+//                ))*/
+//
+//                /**  Using replace  navController.navigate(
+//                route = NavigationItem.BottomNavigation.MovieDetail.route.replace(
+//                oldValue = NavigationConstants.Arg_Movie_Detail,
+//                newValue = movieId
+//                ))*/
+//
+//            })
+//        }
+//        composable(
+//            route = NavigationItem.BottomNavMain.BottomNavProfile.route,
+//            deepLinks = listOf(navDeepLink {
+//                uriPattern = NavigationConstants.Profile_Uri_Pattern
+//            })
+//        ) {
+//            val rt = it.arguments?.getString(NavigationConstants.Request_Token)
+//            ProfileScreen(request_token = rt) { navController.popBackStack() }
+//        }
+//        composable(route = NavigationItem.BottomNavMain.BottomNavContacts.route) {
+//            ContactsScreen()
+//        }
+//        composable(route = NavigationItem.BottomNavMain.BottomNavSettings.route) {
+//            SettingsScreen()
+//        }
+//        composable(
+//            route = NavigationItem.BottomNavMain.MovieDetail.route,
+//            arguments = listOf(navArgument(name = NavigationConstants.Arg_Movie_Detail) {
+//                type = NavType.IntType
+//                nullable = false
+//
+//            })
+//        ) {
+//            val arguments = it.arguments?.getInt(NavigationConstants.Arg_Movie_Detail)
+//            val viewModel: MovieViewModel = parentViewModel(
+//                navController = navController,
+//                route = NavigationItem.BottomNavMain.route
+//            )
+//            MovieDetailScreen(args = arguments!!, viewModel = viewModel)
+//        }
     }
 }

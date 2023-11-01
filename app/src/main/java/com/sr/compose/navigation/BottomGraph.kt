@@ -18,7 +18,7 @@ import com.sr.compose.util.parentViewModel
 
 fun NavGraphBuilder.bottomGraph(navController: NavHostController) {
     navigation(
-        startDestination = NavigationItem.BottomNavMain.BottomNavContacts.route,
+        startDestination = NavigationItem.BottomNavMain.route,
         route = Graph.BOTTOM
     ) {
 

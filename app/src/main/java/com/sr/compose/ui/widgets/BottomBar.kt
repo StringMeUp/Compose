@@ -45,7 +45,7 @@ fun BottomBar(
             items.forEach { item ->
                 BottomNavigationItem(
                     onClick = {
-                        navController.navigateBottomNavigationScreen(item)
+                        navController.navigateBottomNavigationScreen(item, navController.currentDestination?.route ?: "")
                     },
                     icon = {
                         Icon(

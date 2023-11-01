@@ -15,7 +15,7 @@ sealed class NavigationItem(val route: String, val icon: Int, val name: Int) {
             name = R.string.bottom_one
         ){
             object BottomNavProfile : NavigationItem(
-                route = "Profile?rt={rt_arg}", icon = R.drawable.ic_account,
+                route = "Profile", icon = R.drawable.ic_account,
                 name = R.string.bottom_two
             )
 

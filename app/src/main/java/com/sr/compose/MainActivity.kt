@@ -8,27 +8,27 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.util.Consumer
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sr.compose.navigation.AppNavigation
 import com.sr.compose.navigation.ComposeItem
-import com.sr.compose.navigation.DeepLinkVm
+import com.sr.compose.navigation.DeepLinkViewModel
+import com.sr.compose.navigation.NavigationConstants
 import com.sr.compose.navigation.NavigationItem
 import com.sr.compose.ui.theme.ComposeMoviesTheme
 import com.sr.compose.ui.widgets.BottomBar
 import com.sr.compose.ui.widgets.TopBar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,35 +37,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val context = LocalContext.current
-            val deepLinkProcessingViewModel = viewModel<DeepLinkVm>()
-            val startDestination = rememberSaveable(context) {
-                val deepLink =
-                    deepLinkProcessingViewModel.processDeepLinkIfAvailable(intent = intent)
-                if (deepLink?.startsWith("srcapp") == true) {
-                    // deep link handled
-                    NavigationItem.BottomNavMain.BottomNavProfile.route
-                } else {
-                    // default start destination
-                    NavigationItem.BottomNavMain.route
-                }
-            }
             navController = rememberNavController()
-
-            Timber.tag("SAMIRRAMIC")
-                .d("Navigate to current destination:: ${navController.currentDestination}")
-            DisposableEffect(navController) {
-                val consumer = Consumer<Intent> {
-                    navController.handleDeepLink(it)
-                }
-                this@MainActivity.addOnNewIntentListener(consumer)
-                onDispose {
-                    this@MainActivity.removeOnNewIntentListener(consumer)
-                }
-            }
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val deepLinkHandler = viewModel<DeepLinkViewModel>()
             val viewModel: MainViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
 
+            DeepLinkBottomNavigation(deepLinkHandler, navController, intent)
             ComposeApp(
                 isTopBarVisible = { viewModel.topBarState.value },
                 isBottomBarVisible = { viewModel.bottomBarState.value },
@@ -74,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 composeItems = { viewModel.items.value },
                 navController = navController,
                 navBackStackEntry = navBackStackEntry,
-                startDestination = startDestination
+                startDestination = NavigationItem.Main.route
             )
         }
     }
@@ -113,10 +90,27 @@ fun ComposeApp(
 
         val currentRoute = navBackStackEntry?.destination?.route
         setTopBar(currentRoute == NavigationItem.Main.route)
-        setBottomBar(
-            NavigationItem.BottomNavMain?.bottomNavDestinations()
-                ?.any { it.route == currentRoute } ?: false)
+        setBottomBar(NavigationItem.BottomNavMain?.bottomNavDestinations()?.any { it.route == currentRoute } ?: false)
     }
 }
 
+@Composable
+private fun DeepLinkBottomNavigation(
+    deepLinkHandler: DeepLinkViewModel,
+    navController: NavHostController,
+    intent: Intent,
+) {
+    LaunchedEffect(Unit) {
+        /** Manually handling deep-linking because of the nested bottom navigation. */
+        val deepLink = deepLinkHandler.processDeepLink(intent) ?: return@LaunchedEffect
+        if (deepLink.startsWith(NavigationConstants.Scheme)) {
+            navController.navigate(
+                deepLink = deepLink.toUri(),
+                navOptions = NavOptions.Builder()
+                    .setPopUpTo(route = NavigationItem.BottomNavMain.route, true)
+                    .build()
 
+            )
+        }
+    }
+}

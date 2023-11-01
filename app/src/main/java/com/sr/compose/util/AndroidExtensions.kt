@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.sr.compose.navigation.NavigationItem
+import timber.log.Timber
 
 
 /** Prefs */
@@ -98,17 +99,18 @@ fun Intent.launch(context: Context) {
     }
 }
 
-fun NavHostController.navigateBottomNavigationScreen(screen: NavigationItem) = navigate(screen.route) {
-    val navigationRoutes = NavigationItem.BottomNavMain.bottomNavDestinations().map { it.route }
-    val firstBottomBarDestination = currentBackStack.value
-        .firstOrNull { navigationRoutes.contains(it.destination.route) }
-        ?.destination
-    if (firstBottomBarDestination != null) {
-        popUpTo(firstBottomBarDestination.id) {
-            inclusive = true
-            saveState = true
+fun NavHostController.navigateBottomNavigationScreen(screen: NavigationItem, current: String = "") =
+    navigate(screen.route) {
+        val navigationRoutes = NavigationItem.BottomNavMain.bottomNavDestinations().map { it.route }
+        val firstBottomBarDestination = currentBackStack.value
+            .firstOrNull { navigationRoutes.contains(it.destination.route) }?.destination
+
+        if (firstBottomBarDestination != null) {
+            popUpTo(firstBottomBarDestination.id) {
+                inclusive = true
+                saveState = true
+            }
         }
+        launchSingleTop = true
+        restoreState = true
     }
-    launchSingleTop = true
-    restoreState = true
-}
