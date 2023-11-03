@@ -11,7 +11,8 @@ object NetworkConstants {
     const val PATH_REDIRECT = "redirect_to"
 
 
-    const val CRW_TIMEOUT = 10_000L
     const val HTTP_HEADER_X_REQUIRES_AUTHORIZATION = "X-Requires-Authorization"
+    const val HTTP_HEADER_AUTHORIZATION = "Authorization"
     const val BEARER = "Bearer"
+    const val CRW_TIMEOUT = 10_000L
 }

@@ -11,8 +11,10 @@ class OAuthInterceptor : Interceptor {
         val isAuthRequest = request.header(HTTP_HEADER_X_REQUIRES_AUTHORIZATION) != null
 
         if (isAuthRequest) request = request.newBuilder()
-            .header("Authorization", "${NetworkConstants.BEARER} ${BuildConfig.TMDB_API_KEY}")
-            .build()
+            .header(
+                name = NetworkConstants.HTTP_HEADER_AUTHORIZATION,
+                value = "${NetworkConstants.BEARER} ${BuildConfig.TMDB_API_KEY}"
+            ).build()
 
         return chain.proceed(request)
     }
